@@ -1,0 +1,600 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/favicon.png">
+  <link rel="icon" type="image/png" href="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="cnsure">
+  <meta name="keywords" content="">
+  <title>Vagrant虚拟机管理 - 观书喜夜长</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>程序员的日常</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/cc587bda429438928d8ab9ac5c05596d.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-10-02 23:08" pubdate>
+        2020年10月2日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      16
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">Vagrant虚拟机管理</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="什么是Vagrant"><a href="#什么是Vagrant" class="headerlink" title="什么是Vagrant"></a>什么是Vagrant</h1><p><strong>Vagrant</strong>是用来帮助我们创建一个虚拟环境的（感觉有点像docker），它是建立在VMware、VirtualBox等虚拟化工具之上的一个工具，用于将我们从不断安装虚拟机系统中解放出来。它在底层还是利用了虚拟化工具提供的命令行工具，</p>
+<p>在使用该工具之前我们如果要安装一个虚拟机，可能要如下步骤：</p>
+<ol>
+<li>下载镜像</li>
+<li>在VirtualBox中安装，配置硬件信息</li>
+<li>进行相关的配置</li>
+</ol>
+<p>使用Vagrant我们只需要如下步骤：</p>
+<pre><code class="hljs shell">vagrant init centos/7
+vagrant up</code></pre>
+
+<h1 id="通过-Vagrant-创建一个虚拟机"><a href="#通过-Vagrant-创建一个虚拟机" class="headerlink" title="通过 Vagrant 创建一个虚拟机"></a>通过 Vagrant 创建一个虚拟机</h1><h3 id="1-安装Vagrant"><a href="#1-安装Vagrant" class="headerlink" title="1. 安装Vagrant"></a>1. 安装Vagrant</h3><p>因为Vagrant需要依赖虚拟化工具，所以我们需要先安装<a target="_blank" rel="noopener" href="https://www.virtualbox.org/wiki/Downloads">VirtualBox</a>,然后安装<a target="_blank" rel="noopener" href="https://www.vagrantup.com/downloads.html">Vagrant</a>。安装都很简单，直接下一步就可以。</p>
+<p>安装完成在命令行中执行<code>vagrant -v</code>测试是否安装成功。</p>
+<h3 id="2-安装一个虚拟机"><a href="#2-安装一个虚拟机" class="headerlink" title="2. 安装一个虚拟机"></a>2. 安装一个虚拟机</h3><p>注意：执行init的目录要和up的目录为同一目录。</p>
+<p><code>vagrant init centos/7</code> 的目的是创建<strong>Vagrantfile</strong>， 该文件是虚拟机的配置文件</p>
+<p><code>vagrant up</code> 根据当前目录下的vagrantfile启动一个虚拟机</p>
+<p><img src="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/install.png" srcset="/img/loading.gif" alt="install"></p>
+<h3 id="3-进入虚拟机"><a href="#3-进入虚拟机" class="headerlink" title="3. 进入虚拟机"></a>3. 进入虚拟机</h3><p>通过运行<code>vagrant ssh</code>可以进入虚拟机，默认的登录用户为vagrant，其实在上图的启动日志中我们也可以看到Vagrant帮我们创建了一个用户vagrant，并且生成了ssh的秘钥。</p>
+<p>root的密码为vagrant</p>
+<p><img src="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/ssh.png" srcset="/img/loading.gif" alt="ssh"></p>
+<p>这时候我们打开VirtualBox,也可以看到我们当前启动的虚拟机。</p>
+<p><img src="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/virtualbox.png" srcset="/img/loading.gif" alt="virtualbox"></p>
+<h3 id="4-停止虚拟机"><a href="#4-停止虚拟机" class="headerlink" title="4. 停止虚拟机"></a>4. 停止虚拟机</h3><p>可以直接在VirtualBox中停止，也可以执行命令<code>vagrant halt</code>。</p>
+<h1 id="Vagrantfile"><a href="#Vagrantfile" class="headerlink" title="Vagrantfile"></a>Vagrantfile</h1><h3 id="1-Vagrantfile配置"><a href="#1-Vagrantfile配置" class="headerlink" title="1. Vagrantfile配置"></a>1. Vagrantfile配置</h3><pre><code class="hljs ruby"><span class="hljs-comment"># -*- mode: ruby -*-</span>
+<span class="hljs-comment"># vi: set ft=ruby :</span>
+
+<span class="hljs-comment"># All Vagrant configuration is done below. The &quot;2&quot; in Vagrant.configure</span>
+<span class="hljs-comment"># configures the configuration version (we support older styles for</span>
+<span class="hljs-comment"># backwards compatibility). Please don&#x27;t change it unless you know what</span>
+<span class="hljs-comment"># you&#x27;re doing.</span>
+Vagrant.configure(<span class="hljs-string">&quot;2&quot;</span>) <span class="hljs-keyword">do</span> |<span class="hljs-params">config</span>|
+  <span class="hljs-comment"># The most common configuration options are documented and commented below.</span>
+  <span class="hljs-comment"># For a complete reference, please see the online documentation at</span>
+  <span class="hljs-comment"># https://docs.vagrantup.com.</span>
+
+  <span class="hljs-comment"># Every Vagrant development environment requires a box. You can search for</span>
+  <span class="hljs-comment"># boxes at https://vagrantcloud.com/search.</span>
+  <span class="hljs-comment"># 指定用的box</span>
+  config.vm.box = <span class="hljs-string">&quot;centos/7&quot;</span>
+
+  <span class="hljs-comment"># Disable automatic box update checking. If you disable this, then</span>
+  <span class="hljs-comment"># boxes will only be checked for updates when the user runs</span>
+  <span class="hljs-comment"># `vagrant box outdated`. This is not recommended.</span>
+  <span class="hljs-comment"># config.vm.box_check_update = false</span>
+
+  <span class="hljs-comment"># Create a forwarded port mapping which allows access to a specific port</span>
+  <span class="hljs-comment"># within the machine from a port on the host machine. In the example below,</span>
+  <span class="hljs-comment"># accessing &quot;localhost:8080&quot; will access port 80 on the guest machine.</span>
+  <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> This will enable public access to the opened port</span>
+  <span class="hljs-comment"># 设置端口转发</span>
+  <span class="hljs-comment"># config.vm.network &quot;forwarded_port&quot;, guest: 80, host: 8080</span>
+
+  <span class="hljs-comment"># Create a forwarded port mapping which allows access to a specific port</span>
+  <span class="hljs-comment"># within the machine from a port on the host machine and only allow access</span>
+  <span class="hljs-comment"># via 127.0.0.1 to disable public access</span>
+  <span class="hljs-comment"># config.vm.network &quot;forwarded_port&quot;, guest: 80, host: 8080, host_ip: &quot;127.0.0.1&quot;</span>
+
+  <span class="hljs-comment"># Create a private network, which allows host-only access to the machine</span>
+  <span class="hljs-comment"># using a specific IP.</span>
+  <span class="hljs-comment"># 配置网络环境</span>
+  <span class="hljs-comment"># config.vm.network &quot;private_network&quot;, ip: &quot;192.168.33.10&quot;</span>
+  config.vm.network <span class="hljs-string">&quot;private_network&quot;</span>, <span class="hljs-symbol">ip:</span> <span class="hljs-string">&quot;192.168.56.2&quot;</span>
+
+  <span class="hljs-comment"># Create a public network, which generally matched to bridged network.</span>
+  <span class="hljs-comment"># Bridged networks make the machine appear as another physical device on</span>
+  <span class="hljs-comment"># your network.</span>
+  <span class="hljs-comment"># 桥接方式</span>
+  <span class="hljs-comment"># config.vm.network &quot;public_network&quot;</span>
+
+  <span class="hljs-comment"># Share an additional folder to the guest VM. The first argument is</span>
+  <span class="hljs-comment"># the path on the host to the actual folder. The second argument is</span>
+  <span class="hljs-comment"># the path on the guest to mount the folder. And the optional third</span>
+  <span class="hljs-comment"># argument is a set of non-required options.</span>
+  <span class="hljs-comment"># 设置共享目录 默认是用virtual box，只在启动时挂载</span>
+  <span class="hljs-comment"># config.vm.synced_folder &quot;../data&quot;, &quot;/vagrant_data&quot;</span>
+  <span class="hljs-comment"># 使用 nfs 这样可以实时同步 type:&quot;nfs&quot;</span>
+  <span class="hljs-comment"># config.vm.synced_folder &quot;.&quot;, &quot;/vagrant&quot;,type:&quot;nfs&quot;</span>
+
+  <span class="hljs-comment"># Provider-specific configuration so you can fine-tune various</span>
+  <span class="hljs-comment"># backing providers for Vagrant. These expose provider-specific options.</span>
+  <span class="hljs-comment"># Example for VirtualBox:</span>
+  <span class="hljs-comment">#</span>
+  <span class="hljs-comment"># config.vm.provider &quot;virtualbox&quot; do |vb|</span>
+  <span class="hljs-comment">#   # Display the VirtualBox GUI when booting the machine</span>
+  <span class="hljs-comment">#   vb.gui = true</span>
+  <span class="hljs-comment">#</span>
+  <span class="hljs-comment">#   # Customize the amount of memory on the VM:</span>
+  <span class="hljs-comment">#   vb.memory = &quot;1024&quot;</span>
+  <span class="hljs-comment"># end</span>
+  <span class="hljs-comment">#</span>
+  <span class="hljs-comment"># View the documentation for the provider you are using for more</span>
+  <span class="hljs-comment"># information on available options.</span>
+
+  config.vm.provider <span class="hljs-string">&quot;virtualbox&quot;</span> <span class="hljs-keyword">do</span> |<span class="hljs-params">vb</span>|
+    <span class="hljs-comment"># Display the VirtualBox GUI when booting the machine</span>
+    <span class="hljs-comment"># vb.gui = true</span>
+    
+    <span class="hljs-comment"># 设置虚拟机名称 也可指定其他信息 例如下边的指定内存</span>
+    vb.name = <span class="hljs-string">&quot;centos7&quot;</span>
+    <span class="hljs-comment"># Customize the amount of memory on the VM:</span>
+    <span class="hljs-comment"># vb.memory = &quot;1024&quot;</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-comment"># Enable provisioning with a shell script. Additional provisioners such as</span>
+  <span class="hljs-comment"># Ansible, Chef, Docker, Puppet and Salt are also available. Please see the</span>
+  <span class="hljs-comment"># documentation for more information about their specific syntax and use.</span>
+  <span class="hljs-comment"># config.vm.provision &quot;shell&quot;, inline: &lt;&lt;-SHELL</span>
+  <span class="hljs-comment">#   apt-get update</span>
+  <span class="hljs-comment">#   apt-get install -y apache2</span>
+  <span class="hljs-comment"># SHELL</span>
+<span class="hljs-keyword">end</span>
+</code></pre>
+
+<h3 id="2-重启虚拟机"><a href="#2-重启虚拟机" class="headerlink" title="2. 重启虚拟机"></a>2. 重启虚拟机</h3><p>执行 <code>vagrant reload</code>,注意要在执行<code>vagrant init</code>的目录中执行</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Virtual/">Virtual</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/10/08/MongoDB-%E8%B5%B7%E6%AD%A5%EF%BC%88%E4%B8%80%EF%BC%89/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MongoDB 起步（一）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+  <!-- 备案信息 -->
+  <div class="beian">
+    <a href="http://beian.miit.gov.cn/" target="_blank"
+       rel="nofollow noopener">鲁ICP备18049621号-2</a>
+    
+  </div>
+
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Vagrant虚拟机管理&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
