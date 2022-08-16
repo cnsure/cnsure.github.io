@@ -1,66 +1,104 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
 
 
 <head>
   <meta charset="UTF-8">
   <link rel="apple-touch-icon" sizes="76x76" href="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/favicon.png">
-  <link rel="icon" type="image/png" href="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/favicon.png">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <link rel="icon" href="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="">
   <meta name="author" content="cnsure">
   <meta name="keywords" content="">
+  
+    <meta name="description" content="一个由C++语言编写的基于分布式文件存储的数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MongoDB 起步（一）">
+<meta property="og:url" content="http://example.com/2020/10/08/MongoDB-%E8%B5%B7%E6%AD%A5%EF%BC%88%E4%B8%80%EF%BC%89/index.html">
+<meta property="og:site_name" content="观书喜夜长">
+<meta property="og:description" content="一个由C++语言编写的基于分布式文件存储的数据库">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/mongodb_1/截屏2020-10-10 下午2.24.17.png">
+<meta property="article:published_time" content="2020-10-08T13:36:17.000Z">
+<meta property="article:modified_time" content="2022-08-16T14:15:31.255Z">
+<meta property="article:author" content="cnsure">
+<meta property="article:tag" content="MongoDB">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/mongodb_1/截屏2020-10-10 下午2.24.17.png">
+  
+  
+  
   <title>MongoDB 起步（一） - 观书喜夜长</title>
 
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
 
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
-  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
 
-  
-    
-    
-      
-      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
-    
-  
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
 
-  
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
 
 
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
 
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-<!-- 自定义样式保持在最底部 -->
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
 
 
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 5.4.2"></head>
 
 
 <body>
-  <header style="height: 70vh;">
-    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
-    <a class="navbar-brand"
-       href="/">&nbsp;<strong>程序员的日常</strong>&nbsp;</a>
+    <a class="navbar-brand" href="/">
+      <strong>观书喜夜长</strong>
+    </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -134,13 +172,15 @@
         
         
           <li class="nav-item" id="search-btn">
-            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
-                class="iconfont icon-search"></i>&nbsp;</a>
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
         
           <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" href="javascript:">&nbsp;<i
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
                 class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
@@ -149,78 +189,93 @@
   </div>
 </nav>
 
-    <div class="banner intro-2" id="background" parallax=true
-         style="background: url('https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/12a03c23ceb25d9f427bf63d5bc157c8.jpg') no-repeat center center;
-           background-size: cover;">
-      <div class="full-bg-img">
-        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-          <div class="container page-header text-center fade-in-up">
-            <span class="h2" id="subtitle">
-              
-            </span>
-
-            
-              <div class="mt-3">
-  
-  
-    <span class="post-meta">
-      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-10-08 21:36" pubdate>
-        2020年10月8日 晚上
-      </time>
-    </span>
-  
-</div>
-
-<div class="mt-1">
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-chart"></i>
-      1.7k 字
-    </span>
   
 
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-clock-fill"></i>
-      
-      
-      24
-       分钟
-    </span>
-  
-
-  
-  
-</div>
-
-            
-          </div>
-
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/12a03c23ceb25d9f427bf63d5bc157c8.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="MongoDB 起步（一）"></span>
           
         </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-10-08 21:36" pubdate>
+          2020年10月8日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          47 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
       </div>
+
+      
     </div>
+  </div>
+</div>
+
+</div>
+
   </header>
 
   <main>
     
       
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="d-none d-lg-block col-lg-2"></div>
-    <div class="col-lg-8 nopadding-md">
-      <div class="container nopadding-md" id="board-ctn">
-        <div class="py-5" id="board">
-          <article class="post-content mx-auto" id="post">
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
             <!-- SEO header -->
             <h1 style="display: none">MongoDB 起步（一）</h1>
             
-            <div class="markdown-body" id="post-body">
-              <h1 id="MongoDB-简介"><a href="#MongoDB-简介" class="headerlink" title="MongoDB 简介"></a>MongoDB 简介</h1><p>MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。</p>
+            
+              <div class="markdown-body">
+                
+                <h1 id="MongoDB-简介"><a href="#MongoDB-简介" class="headerlink" title="MongoDB 简介"></a>MongoDB 简介</h1><p>MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。</p>
 <h1 id="MongoDB-安装"><a href="#MongoDB-安装" class="headerlink" title="MongoDB 安装"></a>MongoDB 安装</h1><ol>
 <li><p>从<a target="_blank" rel="noopener" href="https://www.mongodb.com/try/download/community">MongoDB</a>官网下载mongodb,解压到本地文件夹</p>
 </li>
@@ -229,25 +284,7 @@
 <li><p>新增配置文件</p>
 </li>
 </ol>
-<pre><code class="hljs properties"><span class="hljs-comment"># 数据存放目录</span>
-<span class="hljs-attr">dbpath</span>=<span class="hljs-string">/Users/sure/opt/mongodb-macos-x86_64-4.2.9/data</span>
-<span class="hljs-comment"></span>
-<span class="hljs-comment"># 指定端口号</span>
-<span class="hljs-comment"># port=27017</span>
-<span class="hljs-comment"></span>
-<span class="hljs-comment"># 指定日志文件</span>
-<span class="hljs-attr">logpath</span>=<span class="hljs-string">/Users/sure/opt/mongodb-macos-x86_64-4.2.9/log/master.log</span>
-<span class="hljs-comment"># 写日志的模式：设置为true为追加，默认覆盖，如未指定启动时将覆盖原日志文件</span>
-<span class="hljs-attr">logappend</span>=<span class="hljs-string">true</span>
-<span class="hljs-comment"># 是否后台执行 默认为false</span>
-<span class="hljs-attr">fork</span>=<span class="hljs-string">true</span>
-<span class="hljs-comment"></span>
-<span class="hljs-comment"># 最大连接数</span>
-<span class="hljs-attr">maxConns</span>=<span class="hljs-string">4000</span>
-<span class="hljs-comment"></span>
-<span class="hljs-comment"># 用户认证，默认false，不需要认证，进入数据库需要auth认证</span>
-<span class="hljs-comment"># 当数据库没有用户，则不需要验证也可以，创建用户之后都要验证</span>
-<span class="hljs-comment"># auth = true</span></code></pre>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-comment"># 数据存放目录</span><br><span class="hljs-attr">dbpath</span>=<span class="hljs-string">/Users/sure/opt/mongodb-macos-x86_64-4.2.9/data</span><br><span class="hljs-comment"></span><br><span class="hljs-comment"># 指定端口号</span><br><span class="hljs-comment"># port=27017</span><br><span class="hljs-comment"></span><br><span class="hljs-comment"># 指定日志文件</span><br><span class="hljs-attr">logpath</span>=<span class="hljs-string">/Users/sure/opt/mongodb-macos-x86_64-4.2.9/log/master.log</span><br><span class="hljs-comment"># 写日志的模式：设置为true为追加，默认覆盖，如未指定启动时将覆盖原日志文件</span><br><span class="hljs-attr">logappend</span>=<span class="hljs-string">true</span><br><span class="hljs-comment"># 是否后台执行 默认为false</span><br><span class="hljs-attr">fork</span>=<span class="hljs-string">true</span><br><span class="hljs-comment"></span><br><span class="hljs-comment"># 最大连接数</span><br><span class="hljs-attr">maxConns</span>=<span class="hljs-string">4000</span><br><span class="hljs-comment"></span><br><span class="hljs-comment"># 用户认证，默认false，不需要认证，进入数据库需要auth认证</span><br><span class="hljs-comment"># 当数据库没有用户，则不需要验证也可以，创建用户之后都要验证</span><br><span class="hljs-comment"># auth = true</span><br></code></pre></td></tr></table></figure>
 
 <ol start="4">
 <li><p>启动MongoDB,在安装目录下执行 <code>./bin/mongod -f mongo.conf</code></p>
@@ -282,7 +319,7 @@
 <li><p><code>db.dropDataBase</code> 删除数据库</p>
 </li>
 </ol>
-<img src=" https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/mongodb_1/截屏2020-10-09 下午2.19.13.png" srcset="/img/loading.gif" alt="数据库操作" style="zoom:50%;" />
+<img src=" https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/mongodb_1/截屏2020-10-09 下午2.19.13.png" srcset="/img/loading.gif" lazyload alt="数据库操作" style="zoom:50%;" />
 
 <h1 id="集合操作"><a href="#集合操作" class="headerlink" title="集合操作"></a>集合操作</h1><ol>
 <li>显示创建集合 <code>db.createCollection(&#39;name&#39;)</code></li>
@@ -291,111 +328,42 @@
 </ol>
 <h1 id="文档CRUD操作"><a href="#文档CRUD操作" class="headerlink" title="文档CRUD操作"></a>文档CRUD操作</h1><ol>
 <li><p>文档插入<code>insert()</code>与<code>save()</code>都可以,这样可以隐式的创建集合class</p>
-<pre><code class="hljs javascript">db.<span class="hljs-property">class</span>.<span class="hljs-title function_">insert</span>(&#123;<span class="hljs-string">&quot;classid&quot;</span>:<span class="hljs-string">&quot;001&quot;</span>,<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;语文&quot;</span>,<span class="hljs-string">&quot;teacher&quot;</span>:<span class="hljs-string">&quot;0001&quot;</span>&#125;)</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">db.<span class="hljs-property">class</span>.<span class="hljs-title function_">insert</span>(&#123;<span class="hljs-string">&quot;classid&quot;</span>:<span class="hljs-string">&quot;001&quot;</span>,<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;语文&quot;</span>,<span class="hljs-string">&quot;teacher&quot;</span>:<span class="hljs-string">&quot;0001&quot;</span>&#125;)<br></code></pre></td></tr></table></figure>
 </li>
 <li><p>插入多条<code>insertMany()</code>，使用数组插入,批量插入出错时,可以使用trycatch</p>
-<pre><code class="hljs javascript">db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">insertMany</span>([
-  &#123;<span class="hljs-string">&quot;teacherid&quot;</span>:<span class="hljs-string">&quot;001&quot;</span>,<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;zhangsan&quot;</span>,<span class="hljs-string">&quot;age&quot;</span>:<span class="hljs-number">23</span>&#125;,
-  &#123;<span class="hljs-string">&quot;teacherid&quot;</span>:<span class="hljs-string">&quot;002&quot;</span>,<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;lisi&quot;</span>,<span class="hljs-string">&quot;age&quot;</span>:<span class="hljs-number">24</span>&#125;,
-])</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript">db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">insertMany</span>([<br>  &#123;<span class="hljs-string">&quot;teacherid&quot;</span>:<span class="hljs-string">&quot;001&quot;</span>,<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;zhangsan&quot;</span>,<span class="hljs-string">&quot;age&quot;</span>:<span class="hljs-number">23</span>&#125;,<br>  &#123;<span class="hljs-string">&quot;teacherid&quot;</span>:<span class="hljs-string">&quot;002&quot;</span>,<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;lisi&quot;</span>,<span class="hljs-string">&quot;age&quot;</span>:<span class="hljs-number">24</span>&#125;,<br>])<br></code></pre></td></tr></table></figure>
 </li>
 <li><p>文档查询<code>find()</code></p>
-<pre><code class="hljs javascript"><span class="hljs-comment">// 查询全部</span>
-db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>();
-<span class="hljs-comment">// 条件查询</span>
-db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;lisi&quot;</span>&#125;)
-<span class="hljs-comment">// 投影查询   查询指定的列后一个参数指定列 1 代表查询  _id 可以通过指定0来排除</span>
-db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">name</span>:<span class="hljs-string">&quot;lisi&quot;</span>&#125;,&#123;<span class="hljs-attr">age</span>:<span class="hljs-number">1</span>,<span class="hljs-attr">name</span>:<span class="hljs-number">1</span>,<span class="hljs-attr">_id</span>:<span class="hljs-number">0</span>&#125;);</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 查询全部</span><br>db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>();<br><span class="hljs-comment">// 条件查询</span><br>db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;lisi&quot;</span>&#125;)<br><span class="hljs-comment">// 投影查询   查询指定的列后一个参数指定列 1 代表查询  _id 可以通过指定0来排除</span><br>db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">name</span>:<span class="hljs-string">&quot;lisi&quot;</span>&#125;,&#123;<span class="hljs-attr">age</span>:<span class="hljs-number">1</span>,<span class="hljs-attr">name</span>:<span class="hljs-number">1</span>,<span class="hljs-attr">_id</span>:<span class="hljs-number">0</span>&#125;);<br></code></pre></td></tr></table></figure>
 </li>
 <li><p>使用try catch  貌似没什么用，需要再查查</p>
-<pre><code class="hljs javascript"><span class="hljs-keyword">try</span>&#123;
-  db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">insertMany</span>([
-    &#123;<span class="hljs-string">&quot;teacherid&quot;</span>:<span class="hljs-string">&quot;003&quot;</span>,<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;wangwu&quot;</span>,<span class="hljs-string">&quot;age&quot;</span>:<span class="hljs-number">23</span>&#125;,
-    &#123;<span class="hljs-string">&quot;teacherid&quot;</span>:<span class="hljs-string">&quot;004&quot;</span>,<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;zhaoliu&quot;</span>,<span class="hljs-string">&quot;age&quot;</span>,<span class="hljs-number">24</span>&#125;,
-  ])
-&#125;<span class="hljs-keyword">catch</span>(e)&#123;
-  <span class="hljs-title function_">print</span>(<span class="hljs-string">&quot;err:&quot;</span>+e);
-&#125;</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">try</span>&#123;<br>  db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">insertMany</span>([<br>    &#123;<span class="hljs-string">&quot;teacherid&quot;</span>:<span class="hljs-string">&quot;003&quot;</span>,<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;wangwu&quot;</span>,<span class="hljs-string">&quot;age&quot;</span>:<span class="hljs-number">23</span>&#125;,<br>    &#123;<span class="hljs-string">&quot;teacherid&quot;</span>:<span class="hljs-string">&quot;004&quot;</span>,<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;zhaoliu&quot;</span>,<span class="hljs-string">&quot;age&quot;</span>,<span class="hljs-number">24</span>&#125;,<br>  ])<br>&#125;<span class="hljs-keyword">catch</span>(e)&#123;<br>  <span class="hljs-title function_">print</span>(<span class="hljs-string">&quot;err:&quot;</span>+e);<br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
 <li><p>更新操作</p>
-<pre><code class="hljs javascript"><span class="hljs-comment">// 语法 db.teacher.update(query,updatedata,option)</span>
-<span class="hljs-comment">// 1. 覆盖修改 直接将对象更新为 第二个参数</span>
-db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">update</span>(&#123;<span class="hljs-attr">name</span>:<span class="hljs-string">&quot;zhangsan&quot;</span>&#125;,&#123;<span class="hljs-attr">age</span>:<span class="hljs-number">26</span>&#125;)
-
-<span class="hljs-comment">// 2. 局部修改 使用$set</span>
-db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">update</span>(&#123;<span class="hljs-attr">name</span>:<span class="hljs-string">&quot;zhangsan&quot;</span>&#125;,&#123;<span class="hljs-attr">$set</span>:&#123;<span class="hljs-attr">age</span>:<span class="hljs-number">26</span>&#125;&#125;);
-
-<span class="hljs-comment">// 3. 批量修改  mongodb 默认只修改匹配的第一条数据  要想修改多条就要使用参数了 option</span>
-db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">update</span>(&#123;<span class="hljs-attr">name</span>:<span class="hljs-string">&quot;lisi&quot;</span>&#125;,&#123;<span class="hljs-attr">$set</span>:&#123;<span class="hljs-attr">age</span>:<span class="hljs-number">28</span>&#125;&#125;,&#123;<span class="hljs-attr">multi</span>:<span class="hljs-literal">true</span>&#125;)
-
-<span class="hljs-comment">// 4. 列值增长 年龄增长一岁</span>
-db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">update</span>(&#123;<span class="hljs-attr">name</span>:<span class="hljs-string">&quot;zhangsan&quot;</span>&#125;,&#123;<span class="hljs-attr">$inc</span>:&#123;<span class="hljs-attr">age</span>:<span class="hljs-number">1</span>&#125;&#125;)
-</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 语法 db.teacher.update(query,updatedata,option)</span><br><span class="hljs-comment">// 1. 覆盖修改 直接将对象更新为 第二个参数</span><br>db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">update</span>(&#123;<span class="hljs-attr">name</span>:<span class="hljs-string">&quot;zhangsan&quot;</span>&#125;,&#123;<span class="hljs-attr">age</span>:<span class="hljs-number">26</span>&#125;)<br><br><span class="hljs-comment">// 2. 局部修改 使用$set</span><br>db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">update</span>(&#123;<span class="hljs-attr">name</span>:<span class="hljs-string">&quot;zhangsan&quot;</span>&#125;,&#123;<span class="hljs-attr">$set</span>:&#123;<span class="hljs-attr">age</span>:<span class="hljs-number">26</span>&#125;&#125;);<br><br><span class="hljs-comment">// 3. 批量修改  mongodb 默认只修改匹配的第一条数据  要想修改多条就要使用参数了 option</span><br>db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">update</span>(&#123;<span class="hljs-attr">name</span>:<span class="hljs-string">&quot;lisi&quot;</span>&#125;,&#123;<span class="hljs-attr">$set</span>:&#123;<span class="hljs-attr">age</span>:<span class="hljs-number">28</span>&#125;&#125;,&#123;<span class="hljs-attr">multi</span>:<span class="hljs-literal">true</span>&#125;)<br><br><span class="hljs-comment">// 4. 列值增长 年龄增长一岁</span><br>db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">update</span>(&#123;<span class="hljs-attr">name</span>:<span class="hljs-string">&quot;zhangsan&quot;</span>&#125;,&#123;<span class="hljs-attr">$inc</span>:&#123;<span class="hljs-attr">age</span>:<span class="hljs-number">1</span>&#125;&#125;)<br><br></code></pre></td></tr></table></figure>
 </li>
 <li><p>删除文档</p>
-<pre><code class="hljs javascript"><span class="hljs-comment">//语法 db.teacher.remove(条件)</span>
-<span class="hljs-comment">// 1.全部删除  谨慎使用 </span>
-db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">remove</span>(&#123;&#125;)
-
-<span class="hljs-comment">// 2.条件删除  </span>
-db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">remove</span>(&#123;<span class="hljs-attr">teacherid</span>:<span class="hljs-string">&quot;003&quot;</span>&#125;)</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//语法 db.teacher.remove(条件)</span><br><span class="hljs-comment">// 1.全部删除  谨慎使用 </span><br>db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">remove</span>(&#123;&#125;)<br><br><span class="hljs-comment">// 2.条件删除  </span><br>db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">remove</span>(&#123;<span class="hljs-attr">teacherid</span>:<span class="hljs-string">&quot;003&quot;</span>&#125;)<br></code></pre></td></tr></table></figure>
 
 
 
 </li>
 </ol>
-<h1 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h1><h2 id="1-统计查询"><a href="#1-统计查询" class="headerlink" title="1. 统计查询"></a>1. 统计查询</h2><pre><code class="hljs javascript"><span class="hljs-comment">// 语法 db.teacher.count(query,options)</span>
+<h1 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h1><h2 id="1-统计查询"><a href="#1-统计查询" class="headerlink" title="1. 统计查询"></a>1. 统计查询</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 语法 db.teacher.count(query,options)</span><br><br><span class="hljs-comment">// 1. 查询全部</span><br>db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">count</span>()；<br><br><span class="hljs-comment">// 2. 条件查询</span><br>db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">count</span>(&#123;<span class="hljs-attr">name</span>:<span class="hljs-string">&quot;zhangsan&quot;</span>&#125;);<br><br></code></pre></td></tr></table></figure>
 
-<span class="hljs-comment">// 1. 查询全部</span>
-db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">count</span>()；
-
-<span class="hljs-comment">// 2. 条件查询</span>
-db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">count</span>(&#123;<span class="hljs-attr">name</span>:<span class="hljs-string">&quot;zhangsan&quot;</span>&#125;);
-</code></pre>
-
-<h2 id="2-分页查询"><a href="#2-分页查询" class="headerlink" title="2. 分页查询"></a>2. 分页查询</h2><pre><code class="hljs javascript"><span class="hljs-comment">/* </span>
-<span class="hljs-comment">* db.teacher.find().limit().skip()</span>
-<span class="hljs-comment">* limit()读取指定数量的数据 默认20</span>
-<span class="hljs-comment">* skip() 跳过指定数量的数据</span>
-<span class="hljs-comment">*/</span>
-
-<span class="hljs-comment">// 查询前两条</span>
-db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">age</span>:<span class="hljs-number">24</span>&#125;).<span class="hljs-title function_">limit</span>(<span class="hljs-number">2</span>)
-
-<span class="hljs-comment">// 查询第二页</span>
-db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">age</span>:<span class="hljs-number">24</span>&#125;).<span class="hljs-title function_">limit</span>(<span class="hljs-number">2</span>).<span class="hljs-title function_">skip</span>(<span class="hljs-number">2</span>)</code></pre>
+<h2 id="2-分页查询"><a href="#2-分页查询" class="headerlink" title="2. 分页查询"></a>2. 分页查询</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">/* </span><br><span class="hljs-comment">* db.teacher.find().limit().skip()</span><br><span class="hljs-comment">* limit()读取指定数量的数据 默认20</span><br><span class="hljs-comment">* skip() 跳过指定数量的数据</span><br><span class="hljs-comment">*/</span><br><br><span class="hljs-comment">// 查询前两条</span><br>db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">age</span>:<span class="hljs-number">24</span>&#125;).<span class="hljs-title function_">limit</span>(<span class="hljs-number">2</span>)<br><br><span class="hljs-comment">// 查询第二页</span><br>db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">age</span>:<span class="hljs-number">24</span>&#125;).<span class="hljs-title function_">limit</span>(<span class="hljs-number">2</span>).<span class="hljs-title function_">skip</span>(<span class="hljs-number">2</span>)<br></code></pre></td></tr></table></figure>
 
 <h2 id="3-排序查询"><a href="#3-排序查询" class="headerlink" title="3. 排序查询"></a>3. 排序查询</h2><p>使用sort()对数据进行排序，sort()中指定排序的字段，用1表示升序 -1表示降序</p>
-<pre><code class="hljs javascript">db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>().<span class="hljs-title function_">sort</span>(&#123;<span class="hljs-attr">age</span>:<span class="hljs-number">1</span>,<span class="hljs-attr">name</span>:-<span class="hljs-number">1</span>&#125;)</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>().<span class="hljs-title function_">sort</span>(&#123;<span class="hljs-attr">age</span>:<span class="hljs-number">1</span>,<span class="hljs-attr">name</span>:-<span class="hljs-number">1</span>&#125;)<br></code></pre></td></tr></table></figure>
 
 <h1 id="复杂查询"><a href="#复杂查询" class="headerlink" title="复杂查询"></a>复杂查询</h1><h2 id="1-正则查询"><a href="#1-正则查询" class="headerlink" title="1. 正则查询"></a>1. 正则查询</h2><p>Mongodb 支持js中的正则查询</p>
-<pre><code class="hljs javascript">db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">name</span>:<span class="hljs-regexp">/zh/</span>&#125;)
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript">db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">name</span>:<span class="hljs-regexp">/zh/</span>&#125;)<br><br>db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">name</span>:<span class="hljs-regexp">/^zh/</span>&#125;)<br></code></pre></td></tr></table></figure>
 
-db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">name</span>:<span class="hljs-regexp">/^zh/</span>&#125;)</code></pre>
+<h2 id="2-比较查询"><a href="#2-比较查询" class="headerlink" title="2. 比较查询"></a>2. 比较查询</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 大于  &gt;</span><br>db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">age</span>:&#123;<span class="hljs-attr">$gt</span>:<span class="hljs-number">23</span>&#125;&#125;)<br><span class="hljs-comment">// 大于等于 &gt;=</span><br>db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">age</span>:&#123;<span class="hljs-attr">$gte</span>:<span class="hljs-number">23</span>&#125;&#125;)<br><span class="hljs-comment">// 小于 &lt;</span><br>db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">age</span>:&#123;<span class="hljs-attr">$lt</span>:<span class="hljs-number">23</span>&#125;&#125;)<br><span class="hljs-comment">// 小于等于 &lt;=</span><br>db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">age</span>:&#123;<span class="hljs-attr">$lte</span>:<span class="hljs-number">23</span>&#125;&#125;)<br><span class="hljs-comment">// 不等于 !=</span><br>db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">age</span>:&#123;<span class="hljs-attr">$ne</span>:<span class="hljs-number">23</span>&#125;&#125;)<br></code></pre></td></tr></table></figure>
 
-<h2 id="2-比较查询"><a href="#2-比较查询" class="headerlink" title="2. 比较查询"></a>2. 比较查询</h2><pre><code class="hljs javascript"><span class="hljs-comment">// 大于  &gt;</span>
-db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">age</span>:&#123;<span class="hljs-attr">$gt</span>:<span class="hljs-number">23</span>&#125;&#125;)
-<span class="hljs-comment">// 大于等于 &gt;=</span>
-db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">age</span>:&#123;<span class="hljs-attr">$gte</span>:<span class="hljs-number">23</span>&#125;&#125;)
-<span class="hljs-comment">// 小于 &lt;</span>
-db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">age</span>:&#123;<span class="hljs-attr">$lt</span>:<span class="hljs-number">23</span>&#125;&#125;)
-<span class="hljs-comment">// 小于等于 &lt;=</span>
-db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">age</span>:&#123;<span class="hljs-attr">$lte</span>:<span class="hljs-number">23</span>&#125;&#125;)
-<span class="hljs-comment">// 不等于 !=</span>
-db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">age</span>:&#123;<span class="hljs-attr">$ne</span>:<span class="hljs-number">23</span>&#125;&#125;)</code></pre>
+<h2 id="3-包含查询"><a href="#3-包含查询" class="headerlink" title="3. 包含查询"></a>3. 包含查询</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 类比mysql in</span><br>db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">age</span>:&#123;<span class="hljs-attr">$in</span>:[<span class="hljs-number">23</span>]&#125;&#125;)<br><br><span class="hljs-comment">//not in</span><br>db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">age</span>:&#123;<span class="hljs-attr">$nin</span>:[<span class="hljs-number">23</span>]&#125;&#125;)<br></code></pre></td></tr></table></figure>
 
-<h2 id="3-包含查询"><a href="#3-包含查询" class="headerlink" title="3. 包含查询"></a>3. 包含查询</h2><pre><code class="hljs javascript"><span class="hljs-comment">// 类比mysql in</span>
-db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">age</span>:&#123;<span class="hljs-attr">$in</span>:[<span class="hljs-number">23</span>]&#125;&#125;)
-
-<span class="hljs-comment">//not in</span>
-db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">age</span>:&#123;<span class="hljs-attr">$nin</span>:[<span class="hljs-number">23</span>]&#125;&#125;)</code></pre>
-
-<h2 id="4-条件连接查询"><a href="#4-条件连接查询" class="headerlink" title="4. 条件连接查询"></a>4. 条件连接查询</h2><pre><code class="hljs javascript"><span class="hljs-comment">// and 查询 &#123;$and:[&#123;&#125;,&#123;&#125;,&#123;&#125;]</span>
-db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">$and</span>:[&#123;<span class="hljs-attr">_id</span>:&#123;<span class="hljs-attr">$gt</span>:<span class="hljs-number">3</span>&#125;&#125;,&#123;<span class="hljs-attr">age</span>:&#123;<span class="hljs-attr">$gt</span>:<span class="hljs-number">24</span>&#125;&#125;]&#125;)<span class="hljs-comment">//id&gt;3 并且 age&gt;24</span>
-
-<span class="hljs-comment">// or 查询 &#123;$or:[&#123;&#125;,&#123;&#125;,&#123;&#125;]</span>
-db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">$or</span>:[&#123;<span class="hljs-attr">_id</span>:&#123;<span class="hljs-attr">$gt</span>:<span class="hljs-number">3</span>&#125;&#125;,&#123;<span class="hljs-attr">age</span>:&#123;<span class="hljs-attr">$gt</span>:<span class="hljs-number">24</span>&#125;&#125;]&#125;)
-</code></pre>
+<h2 id="4-条件连接查询"><a href="#4-条件连接查询" class="headerlink" title="4. 条件连接查询"></a>4. 条件连接查询</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// and 查询 &#123;$and:[&#123;&#125;,&#123;&#125;,&#123;&#125;]</span><br>db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">$and</span>:[&#123;<span class="hljs-attr">_id</span>:&#123;<span class="hljs-attr">$gt</span>:<span class="hljs-number">3</span>&#125;&#125;,&#123;<span class="hljs-attr">age</span>:&#123;<span class="hljs-attr">$gt</span>:<span class="hljs-number">24</span>&#125;&#125;]&#125;)<span class="hljs-comment">//id&gt;3 并且 age&gt;24</span><br><br><span class="hljs-comment">// or 查询 &#123;$or:[&#123;&#125;,&#123;&#125;,&#123;&#125;]</span><br>db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">find</span>(&#123;<span class="hljs-attr">$or</span>:[&#123;<span class="hljs-attr">_id</span>:&#123;<span class="hljs-attr">$gt</span>:<span class="hljs-number">3</span>&#125;&#125;,&#123;<span class="hljs-attr">age</span>:&#123;<span class="hljs-attr">$gt</span>:<span class="hljs-number">24</span>&#125;&#125;]&#125;)<br><br></code></pre></td></tr></table></figure>
 
 <h1 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h1><p>如果没有索引，MongoDB在执行查询的时候必须执行全集合扫描，即扫描集合中的每个文档，以选择与查询语句匹配的文档。MongoDB的索引采用B树的数据结构</p>
 <h2 id="1-索引的类型"><a href="#1-索引的类型" class="headerlink" title="1. 索引的类型"></a>1. 索引的类型</h2><ul>
@@ -409,117 +377,101 @@ db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_"
 <p>地理空间索引、文本索引、哈希索引</p>
 </li>
 </ul>
-<h2 id="2-索引操作"><a href="#2-索引操作" class="headerlink" title="2. 索引操作"></a>2. 索引操作</h2><h3 id="1-查看索引"><a href="#1-查看索引" class="headerlink" title="1.查看索引"></a>1.查看索引</h3><pre><code class="hljs javascript"><span class="hljs-comment">// 获取索引 以数据形式返回</span>
-db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">getIndex</span>();
-<span class="hljs-comment">// 返回结果</span>
-[
-	&#123;
-		<span class="hljs-string">&quot;v&quot;</span> : <span class="hljs-number">2</span>,  <span class="hljs-comment">// 索引版本</span>
-		<span class="hljs-string">&quot;key&quot;</span> : &#123; <span class="hljs-comment">// 索引的字段</span>
-			<span class="hljs-string">&quot;_id&quot;</span> : <span class="hljs-number">1</span>  <span class="hljs-comment">// 以 _id 为索引 按升序排序</span>
-		&#125;,
-		<span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;_id_&quot;</span>, <span class="hljs-comment">// 索引名字</span>
-		<span class="hljs-string">&quot;ns&quot;</span> : <span class="hljs-string">&quot;articledb.teacher&quot;</span> <span class="hljs-comment">//命名空间</span>
-	&#125;
-]</code></pre>
+<h2 id="2-索引操作"><a href="#2-索引操作" class="headerlink" title="2. 索引操作"></a>2. 索引操作</h2><h3 id="1-查看索引"><a href="#1-查看索引" class="headerlink" title="1.查看索引"></a>1.查看索引</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 获取索引 以数据形式返回</span><br>db.<span class="hljs-property">teacher</span>.<span class="hljs-title function_">getIndex</span>();<br><span class="hljs-comment">// 返回结果</span><br>[<br>	&#123;<br>		<span class="hljs-string">&quot;v&quot;</span> : <span class="hljs-number">2</span>,  <span class="hljs-comment">// 索引版本</span><br>		<span class="hljs-string">&quot;key&quot;</span> : &#123; <span class="hljs-comment">// 索引的字段</span><br>			<span class="hljs-string">&quot;_id&quot;</span> : <span class="hljs-number">1</span>  <span class="hljs-comment">// 以 _id 为索引 按升序排序</span><br>		&#125;,<br>		<span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;_id_&quot;</span>, <span class="hljs-comment">// 索引名字</span><br>		<span class="hljs-string">&quot;ns&quot;</span> : <span class="hljs-string">&quot;articledb.teacher&quot;</span> <span class="hljs-comment">//命名空间</span><br>	&#125;<br>]<br></code></pre></td></tr></table></figure>
 
-<h3 id="2-创建索引"><a href="#2-创建索引" class="headerlink" title="2.创建索引"></a>2.创建索引</h3><pre><code class="hljs javascript"><span class="hljs-comment">// db.teacher.createIndex(keys,options);</span>
+<h3 id="2-创建索引"><a href="#2-创建索引" class="headerlink" title="2.创建索引"></a>2.创建索引</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// db.teacher.createIndex(keys,options);</span><br><br><span class="hljs-comment">// 创建单字段索引</span><br>db.<span class="hljs-property">class</span>.<span class="hljs-title function_">createIndex</span>(&#123;<span class="hljs-attr">classid</span>:<span class="hljs-number">1</span>&#125;)<br><span class="hljs-comment">//获取索引</span><br>[<br>	&#123;<br>		<span class="hljs-string">&quot;v&quot;</span> : <span class="hljs-number">2</span>,<br>		<span class="hljs-string">&quot;key&quot;</span> : &#123;<br>			<span class="hljs-string">&quot;_id&quot;</span> : <span class="hljs-number">1</span><br>		&#125;,<br>		<span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;_id_&quot;</span>,<br>		<span class="hljs-string">&quot;ns&quot;</span> : <span class="hljs-string">&quot;articledb.class&quot;</span><br>	&#125;,<br>	&#123;<br>		<span class="hljs-string">&quot;v&quot;</span> : <span class="hljs-number">2</span>,<br>		<span class="hljs-string">&quot;key&quot;</span> : &#123;<br>			<span class="hljs-string">&quot;classid&quot;</span> : <span class="hljs-number">1</span><br>		&#125;,<br>		<span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;classid_1&quot;</span>,<span class="hljs-comment">//默认索引名称加排序方式</span><br>		<span class="hljs-string">&quot;ns&quot;</span> : <span class="hljs-string">&quot;articledb.class&quot;</span><br>	&#125;<br>]<br><br><span class="hljs-comment">// 创建复合索引</span><br>db.<span class="hljs-property">class</span>.<span class="hljs-title function_">createIndex</span>(&#123;<span class="hljs-attr">classid</span>:<span class="hljs-number">1</span>,<span class="hljs-attr">name</span>:-<span class="hljs-number">1</span>&#125;,&#123;<span class="hljs-attr">name</span>:<span class="hljs-string">&quot;class_name_index&quot;</span>&#125;)<br><span class="hljs-comment">//获取索引</span><br>[<br>	&#123;<br>		<span class="hljs-string">&quot;v&quot;</span> : <span class="hljs-number">2</span>,<br>		<span class="hljs-string">&quot;key&quot;</span> : &#123;<br>			<span class="hljs-string">&quot;_id&quot;</span> : <span class="hljs-number">1</span><br>		&#125;,<br>		<span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;_id_&quot;</span>,<br>		<span class="hljs-string">&quot;ns&quot;</span> : <span class="hljs-string">&quot;articledb.class&quot;</span><br>	&#125;,<br>	&#123;<br>		<span class="hljs-string">&quot;v&quot;</span> : <span class="hljs-number">2</span>,<br>		<span class="hljs-string">&quot;key&quot;</span> : &#123;<br>			<span class="hljs-string">&quot;classid&quot;</span> : <span class="hljs-number">1</span><br>		&#125;,<br>		<span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;classid_1&quot;</span>,<br>		<span class="hljs-string">&quot;ns&quot;</span> : <span class="hljs-string">&quot;articledb.class&quot;</span><br>	&#125;,<br>	&#123;<br>		<span class="hljs-string">&quot;v&quot;</span> : <span class="hljs-number">2</span>,<br>		<span class="hljs-string">&quot;key&quot;</span> : &#123;<br>			<span class="hljs-string">&quot;classid&quot;</span> : <span class="hljs-number">1</span>,<br>			<span class="hljs-string">&quot;name&quot;</span> : -<span class="hljs-number">1</span><br>		&#125;,<br>		<span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;class_name_index&quot;</span>,<span class="hljs-comment">//指定的索引名称</span><br>		<span class="hljs-string">&quot;ns&quot;</span> : <span class="hljs-string">&quot;articledb.class&quot;</span><br>	&#125;<br>]<br><br></code></pre></td></tr></table></figure>
 
-<span class="hljs-comment">// 创建单字段索引</span>
-db.<span class="hljs-property">class</span>.<span class="hljs-title function_">createIndex</span>(&#123;<span class="hljs-attr">classid</span>:<span class="hljs-number">1</span>&#125;)
-<span class="hljs-comment">//获取索引</span>
-[
-	&#123;
-		<span class="hljs-string">&quot;v&quot;</span> : <span class="hljs-number">2</span>,
-		<span class="hljs-string">&quot;key&quot;</span> : &#123;
-			<span class="hljs-string">&quot;_id&quot;</span> : <span class="hljs-number">1</span>
-		&#125;,
-		<span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;_id_&quot;</span>,
-		<span class="hljs-string">&quot;ns&quot;</span> : <span class="hljs-string">&quot;articledb.class&quot;</span>
-	&#125;,
-	&#123;
-		<span class="hljs-string">&quot;v&quot;</span> : <span class="hljs-number">2</span>,
-		<span class="hljs-string">&quot;key&quot;</span> : &#123;
-			<span class="hljs-string">&quot;classid&quot;</span> : <span class="hljs-number">1</span>
-		&#125;,
-		<span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;classid_1&quot;</span>,<span class="hljs-comment">//默认索引名称加排序方式</span>
-		<span class="hljs-string">&quot;ns&quot;</span> : <span class="hljs-string">&quot;articledb.class&quot;</span>
-	&#125;
-]
-
-<span class="hljs-comment">// 创建复合索引</span>
-db.<span class="hljs-property">class</span>.<span class="hljs-title function_">createIndex</span>(&#123;<span class="hljs-attr">classid</span>:<span class="hljs-number">1</span>,<span class="hljs-attr">name</span>:-<span class="hljs-number">1</span>&#125;,&#123;<span class="hljs-attr">name</span>:<span class="hljs-string">&quot;class_name_index&quot;</span>&#125;)
-<span class="hljs-comment">//获取索引</span>
-[
-	&#123;
-		<span class="hljs-string">&quot;v&quot;</span> : <span class="hljs-number">2</span>,
-		<span class="hljs-string">&quot;key&quot;</span> : &#123;
-			<span class="hljs-string">&quot;_id&quot;</span> : <span class="hljs-number">1</span>
-		&#125;,
-		<span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;_id_&quot;</span>,
-		<span class="hljs-string">&quot;ns&quot;</span> : <span class="hljs-string">&quot;articledb.class&quot;</span>
-	&#125;,
-	&#123;
-		<span class="hljs-string">&quot;v&quot;</span> : <span class="hljs-number">2</span>,
-		<span class="hljs-string">&quot;key&quot;</span> : &#123;
-			<span class="hljs-string">&quot;classid&quot;</span> : <span class="hljs-number">1</span>
-		&#125;,
-		<span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;classid_1&quot;</span>,
-		<span class="hljs-string">&quot;ns&quot;</span> : <span class="hljs-string">&quot;articledb.class&quot;</span>
-	&#125;,
-	&#123;
-		<span class="hljs-string">&quot;v&quot;</span> : <span class="hljs-number">2</span>,
-		<span class="hljs-string">&quot;key&quot;</span> : &#123;
-			<span class="hljs-string">&quot;classid&quot;</span> : <span class="hljs-number">1</span>,
-			<span class="hljs-string">&quot;name&quot;</span> : -<span class="hljs-number">1</span>
-		&#125;,
-		<span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;class_name_index&quot;</span>,<span class="hljs-comment">//指定的索引名称</span>
-		<span class="hljs-string">&quot;ns&quot;</span> : <span class="hljs-string">&quot;articledb.class&quot;</span>
-	&#125;
-]
-</code></pre>
-
-<h3 id="3-删除索引"><a href="#3-删除索引" class="headerlink" title="3. 删除索引"></a>3. 删除索引</h3><pre><code class="hljs javascript"><span class="hljs-comment">// 语法 db.class.dropIndex(name); 可以根据名称去删  也可以根据具体的索引字段去删除</span>
-
-db.<span class="hljs-property">class</span>.<span class="hljs-title function_">dropIndex</span>(&#123;<span class="hljs-attr">classid</span>:<span class="hljs-number">1</span>&#125;);
-
-db.<span class="hljs-property">class</span>.<span class="hljs-title function_">dropIndex</span>(<span class="hljs-string">&quot;class_name_index&quot;</span>);
+<h3 id="3-删除索引"><a href="#3-删除索引" class="headerlink" title="3. 删除索引"></a>3. 删除索引</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 语法 db.class.dropIndex(name); 可以根据名称去删  也可以根据具体的索引字段去删除</span><br><br>db.<span class="hljs-property">class</span>.<span class="hljs-title function_">dropIndex</span>(&#123;<span class="hljs-attr">classid</span>:<span class="hljs-number">1</span>&#125;);<br><br>db.<span class="hljs-property">class</span>.<span class="hljs-title function_">dropIndex</span>(<span class="hljs-string">&quot;class_name_index&quot;</span>);<br><br><br><span class="hljs-comment">// 删除所有索引</span><br>db.<span class="hljs-property">class</span>.<span class="hljs-title function_">dropIndexes</span>();<br></code></pre></td></tr></table></figure>
 
 
-<span class="hljs-comment">// 删除所有索引</span>
-db.<span class="hljs-property">class</span>.<span class="hljs-title function_">dropIndexes</span>();</code></pre>
-
-
-            </div>
-            <hr>
-            <div>
-              <div class="post-metas mb-3">
-                
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
-                    
-                  </div>
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/MongoDB/">MongoDB</a>
-                    
-                  </div>
                 
               </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="category-chain-item">数据库</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MongoDB/">#MongoDB</a>
+      
+    </div>
+  
+</div>
+
+
               
-                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>MongoDB 起步（一）</div>
+      <div>http://example.com/2020/10/08/MongoDB-起步（一）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>cnsure</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年10月8日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
               
-              
-                <div class="post-prevnext row">
+                <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/12/02/Mybatis%E5%8A%A8%E6%80%81%E6%95%B0%E6%8D%AE%E6%BA%90/">
+                      <a href="/2020/12/02/Mybatis%E5%8A%A8%E6%80%81%E6%95%B0%E6%8D%AE%E6%BA%90/" title="Mybatis动态数据源">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">Mybatis动态数据源</span>
                         <span class="visible-mobile">上一篇</span>
@@ -529,7 +481,7 @@ db.<span class="hljs-property">class</span>.<span class="hljs-title function_">d
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/10/02/Vagrant%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%AE%A1%E7%90%86/">
+                      <a href="/2020/10/02/Vagrant%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%AE%A1%E7%90%86/" title="Vagrant虚拟机管理">
                         <span class="hidden-mobile">Vagrant虚拟机管理</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -545,32 +497,62 @@ db.<span class="hljs-property">class</span>.<span class="hljs-title function_">d
         </div>
       </div>
     </div>
-    
-      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
-        <div id="toc">
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
   <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
-  <div id="tocbot"></div>
+  <div class="toc-body" id="toc-body"></div>
 </div>
 
-      </div>
-    
+
+
+  </aside>
+
+
+    </div>
   </div>
 </div>
 
-<!-- Custom -->
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
 
 
     
-  </main>
 
-  
-    <a id="scroll-top-button" href="#" role="button">
-      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-    </a>
-  
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
 
-  
-    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
      aria-hidden="true">
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
@@ -583,179 +565,159 @@ db.<span class="hljs-property">class</span>.<span class="hljs-title function_">d
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v"
-                 for="local-search-input">关键词</label>
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
     </div>
   </div>
 </div>
-  
 
-  
+    
 
-  
+    
+  </main>
 
-  <footer class="mt-5">
-  <div class="text-center py-3">
-    <div>
-      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
-      <i class="iconfont icon-love"></i>
-      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
-        <span>Fluid</span></a>
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
     </div>
-    
-
-    
-  <!-- 备案信息 -->
-  <div class="beian">
-    <a href="http://beian.miit.gov.cn/" target="_blank"
-       rel="nofollow noopener">鲁ICP备18049621号-2</a>
-    
-  </div>
-
-
-    
-  </div>
-</footer>
-
-<!-- SCRIPTS -->
-<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
-<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
-<script  src="/js/debouncer.js" ></script>
-<script  src="/js/main.js" ></script>
-
-<!-- Plugins -->
-
-
   
-    <script  src="/js/lazyload.js" ></script>
   
-
-
-
   
+  
+</div>
 
+  </footer>
 
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
 
-  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
-  <script  src="/js/clipboard-use.js" ></script>
-
-
-
-
-
-
-
-  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
   <script>
-    $(document).ready(function () {
-      var boardCtn = $('#board-ctn');
-      var boardTop = boardCtn.offset().top;
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
 
-      tocbot.init({
-        tocSelector: '#tocbot',
-        contentSelector: '#post-body',
-        headingSelector: 'h1,h2,h3,h4,h5,h6',
-        linkClass: 'tocbot-link',
-        activeLinkClass: 'tocbot-active-link',
-        listClass: 'tocbot-list',
-        isCollapsedClass: 'tocbot-is-collapsed',
-        collapsibleClass: 'tocbot-is-collapsible',
-        collapseDepth: 0,
-        scrollSmooth: true,
-        headingsOffset: -boardTop
-      });
-      if ($('.toc-list-item').length > 0) {
-        $('#toc').css('visibility', 'visible');
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-    });
-  </script>
-
-
-
-  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
-  <script>
-    var typed = new Typed('#subtitle', {
-      strings: [
-        '  ',
-        "MongoDB 起步（一）&nbsp;",
-      ],
-      cursorChar: "_",
-      typeSpeed: 70,
-      loop: false,
-    });
-    typed.stop();
-    $(document).ready(function () {
-      $(".typed-cursor").addClass("h2");
-      typed.start();
-    });
-  </script>
-
-
-
-  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
-  <script>
-    anchors.options = {
-      placement: "right",
-      visible: "hover",
+      var text = subtitle.getAttribute('data-typed-text');
       
-    };
-    var el = "h1,h2,h3,h4,h5,h6".split(",");
-    var res = [];
-    for (item of el) {
-      res.push(".markdown-body > " + item)
-    }
-    anchors.add(res.join(", "))
+        typing(text);
+      
+    })(window, document);
   </script>
 
 
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
 
   <script  src="/js/local-search.js" ></script>
-  <script>
-    var path = "/local-search.xml";
-    var inputArea = document.querySelector("#local-search-input");
-    inputArea.onclick = function () {
-      searchFunc(path, 'local-search-input', 'local-search-result');
-      this.onclick = null
-    }
-  </script>
-
-
-
-  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-  <script>
-    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
-      function () {
-        var element = document.createElement('a');
-        $(element).attr('data-fancybox', 'images');
-        $(element).attr('href', $(this).attr('src'));
-        $(this).wrap(element);
-      }
-    );
-  </script>
 
 
 
 
 
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
 
 
+  
 
-
-
-
-
-
-
-
-
-
-
-
-
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
 </body>
 </html>

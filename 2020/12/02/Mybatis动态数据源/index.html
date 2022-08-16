@@ -1,66 +1,104 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
 
 
 <head>
   <meta charset="UTF-8">
   <link rel="apple-touch-icon" sizes="76x76" href="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/favicon.png">
-  <link rel="icon" type="image/png" href="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/favicon.png">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <link rel="icon" href="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="">
   <meta name="author" content="cnsure">
   <meta name="keywords" content="">
+  
+    <meta name="description" content="Mybatis动态数据源实现不同数据源动态切换，实现同一套代码服务于不同的业务线">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mybatis动态数据源">
+<meta property="og:url" content="http://example.com/2020/12/02/Mybatis%E5%8A%A8%E6%80%81%E6%95%B0%E6%8D%AE%E6%BA%90/index.html">
+<meta property="og:site_name" content="观书喜夜长">
+<meta property="og:description" content="Mybatis动态数据源实现不同数据源动态切换，实现同一套代码服务于不同的业务线">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/mongodb_1/20201202221540.png">
+<meta property="article:published_time" content="2020-12-02T13:36:17.000Z">
+<meta property="article:modified_time" content="2022-08-16T14:15:31.231Z">
+<meta property="article:author" content="cnsure">
+<meta property="article:tag" content="Mybatis">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/mongodb_1/20201202221540.png">
+  
+  
+  
   <title>Mybatis动态数据源 - 观书喜夜长</title>
 
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
 
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
-  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
 
-  
-    
-    
-      
-      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
-    
-  
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
 
-  
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
 
 
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
 
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-<!-- 自定义样式保持在最底部 -->
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
 
 
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 5.4.2"></head>
 
 
 <body>
-  <header style="height: 70vh;">
-    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
-    <a class="navbar-brand"
-       href="/">&nbsp;<strong>程序员的日常</strong>&nbsp;</a>
+    <a class="navbar-brand" href="/">
+      <strong>观书喜夜长</strong>
+    </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -134,13 +172,15 @@
         
         
           <li class="nav-item" id="search-btn">
-            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
-                class="iconfont icon-search"></i>&nbsp;</a>
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
           </li>
+          
         
         
           <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" href="javascript:">&nbsp;<i
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
                 class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
@@ -149,474 +189,225 @@
   </div>
 </nav>
 
-    <div class="banner intro-2" id="background" parallax=true
-         style="background: url('https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/12a03c23ceb25d9f427bf63d5bc157c8.jpg') no-repeat center center;
-           background-size: cover;">
-      <div class="full-bg-img">
-        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-          <div class="container page-header text-center fade-in-up">
-            <span class="h2" id="subtitle">
-              
-            </span>
-
-            
-              <div class="mt-3">
-  
-  
-    <span class="post-meta">
-      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-12-02 21:36" pubdate>
-        2020年12月2日 晚上
-      </time>
-    </span>
-  
-</div>
-
-<div class="mt-1">
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-chart"></i>
-      1.5k 字
-    </span>
   
 
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-clock-fill"></i>
-      
-      
-      26
-       分钟
-    </span>
-  
-
-  
-  
-</div>
-
-            
-          </div>
-
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/12a03c23ceb25d9f427bf63d5bc157c8.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Mybatis动态数据源"></span>
           
         </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-12-02 21:36" pubdate>
+          2020年12月2日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          76 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
       </div>
+
+      
     </div>
+  </div>
+</div>
+
+</div>
+
   </header>
 
   <main>
     
       
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="d-none d-lg-block col-lg-2"></div>
-    <div class="col-lg-8 nopadding-md">
-      <div class="container nopadding-md" id="board-ctn">
-        <div class="py-5" id="board">
-          <article class="post-content mx-auto" id="post">
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
             <!-- SEO header -->
             <h1 style="display: none">Mybatis动态数据源</h1>
             
-            <div class="markdown-body" id="post-body">
-              <h1 id="业务场景"><a href="#业务场景" class="headerlink" title="业务场景"></a>业务场景</h1><p>现有股票与基金业务，不同的业务分在不同的库中，但有些业务类似可以基于同一套代码，例如组织架构、权限控制与客户管理，但是为区分业务线，要将数据拆分在不同的数据库中</p>
+            
+              <div class="markdown-body">
+                
+                <h1 id="业务场景"><a href="#业务场景" class="headerlink" title="业务场景"></a>业务场景</h1><p>现有股票与基金业务，不同的业务分在不同的库中，但有些业务类似可以基于同一套代码，例如组织架构、权限控制与客户管理，但是为区分业务线，要将数据拆分在不同的数据库中</p>
 <h1 id="达成效果"><a href="#达成效果" class="headerlink" title="达成效果"></a>达成效果</h1><p>不同的业务传对应的业务参数，保存到相应的库中</p>
-<h2 id="基金业务"><a href="#基金业务" class="headerlink" title="基金业务"></a>基金业务</h2><h3 id="新增用户"><a href="#新增用户" class="headerlink" title="新增用户"></a>新增用户</h3><p><img src="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/mongodb_1/image-20201202214530335.png" srcset="/img/loading.gif" alt="image-20201202214530335"></p>
-<h3 id="查询用户"><a href="#查询用户" class="headerlink" title="查询用户"></a>查询用户</h3><p><img src="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/mongodb_1/image-20201202214834950.png" srcset="/img/loading.gif" alt="image-20201202214834950"></p>
-<h2 id="股票业务"><a href="#股票业务" class="headerlink" title="股票业务"></a>股票业务</h2><h3 id="新增用户-1"><a href="#新增用户-1" class="headerlink" title="新增用户"></a>新增用户</h3><p><img src="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/mongodb_1/image-20201202214736326.png" srcset="/img/loading.gif" alt="image-20201202214736326"></p>
-<h3 id="查询用户-1"><a href="#查询用户-1" class="headerlink" title="查询用户"></a>查询用户</h3><p><img src="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/mongodb_1/image-20201202215006443.png" srcset="/img/loading.gif" alt="image-20201202215006443"></p>
-<h1 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h1><h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><p><img src="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/mongodb_1/image-20201202212630462.png" srcset="/img/loading.gif" alt="image-20201202212630462"></p>
-<h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><p><img src="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/mongodb_1/image-20201202213814882.png" srcset="/img/loading.gif" alt="image-20201202213814882"></p>
-<h2 id="表结构"><a href="#表结构" class="headerlink" title="表结构"></a>表结构</h2><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> `rbac_user` (
-  `id` <span class="hljs-type">int</span>(<span class="hljs-number">11</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span> AUTO_INCREMENT,
-  `name` <span class="hljs-type">varchar</span>(<span class="hljs-number">64</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,
-  <span class="hljs-keyword">PRIMARY</span> KEY (`id`)
-) ENGINE<span class="hljs-operator">=</span>InnoDB AUTO_INCREMENT<span class="hljs-operator">=</span><span class="hljs-number">1</span> <span class="hljs-keyword">DEFAULT</span> CHARSET<span class="hljs-operator">=</span>utf8mb4 <span class="hljs-keyword">COLLATE</span><span class="hljs-operator">=</span>utf8mb4_0900_ai_ci</code></pre>
+<h2 id="基金业务"><a href="#基金业务" class="headerlink" title="基金业务"></a>基金业务</h2><h3 id="新增用户"><a href="#新增用户" class="headerlink" title="新增用户"></a>新增用户</h3><p><img src="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/mongodb_1/image-20201202214530335.png" srcset="/img/loading.gif" lazyload alt="image-20201202214530335"></p>
+<h3 id="查询用户"><a href="#查询用户" class="headerlink" title="查询用户"></a>查询用户</h3><p><img src="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/mongodb_1/image-20201202214834950.png" srcset="/img/loading.gif" lazyload alt="image-20201202214834950"></p>
+<h2 id="股票业务"><a href="#股票业务" class="headerlink" title="股票业务"></a>股票业务</h2><h3 id="新增用户-1"><a href="#新增用户-1" class="headerlink" title="新增用户"></a>新增用户</h3><p><img src="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/mongodb_1/image-20201202214736326.png" srcset="/img/loading.gif" lazyload alt="image-20201202214736326"></p>
+<h3 id="查询用户-1"><a href="#查询用户-1" class="headerlink" title="查询用户"></a>查询用户</h3><p><img src="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/mongodb_1/image-20201202215006443.png" srcset="/img/loading.gif" lazyload alt="image-20201202215006443"></p>
+<h1 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h1><h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><p><img src="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/mongodb_1/image-20201202212630462.png" srcset="/img/loading.gif" lazyload alt="image-20201202212630462"></p>
+<h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><p><img src="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/mongodb_1/image-20201202213814882.png" srcset="/img/loading.gif" lazyload alt="image-20201202213814882"></p>
+<h2 id="表结构"><a href="#表结构" class="headerlink" title="表结构"></a>表结构</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> `rbac_user` (<br>  `id` <span class="hljs-type">int</span>(<span class="hljs-number">11</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span> AUTO_INCREMENT,<br>  `name` <span class="hljs-type">varchar</span>(<span class="hljs-number">64</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,<br>  <span class="hljs-keyword">PRIMARY</span> KEY (`id`)<br>) ENGINE<span class="hljs-operator">=</span>InnoDB AUTO_INCREMENT<span class="hljs-operator">=</span><span class="hljs-number">1</span> <span class="hljs-keyword">DEFAULT</span> CHARSET<span class="hljs-operator">=</span>utf8mb4 <span class="hljs-keyword">COLLATE</span><span class="hljs-operator">=</span>utf8mb4_0900_ai_ci<br></code></pre></td></tr></table></figure>
 
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><h3 id="1-POM依赖"><a href="#1-POM依赖" class="headerlink" title="1. POM依赖"></a>1. POM依赖</h3><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">project</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span>
-<span class="hljs-tag">	<span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span>
-	<span class="hljs-tag">&lt;<span class="hljs-name">modelVersion</span>&gt;</span>4.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">modelVersion</span>&gt;</span>
-	<span class="hljs-tag">&lt;<span class="hljs-name">parent</span>&gt;</span>
-		<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
-		<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
-		<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.4.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
-		<span class="hljs-tag">&lt;<span class="hljs-name">relativePath</span>/&gt;</span> <span class="hljs-comment">&lt;!-- lookup parent from repository --&gt;</span>
-	<span class="hljs-tag">&lt;/<span class="hljs-name">parent</span>&gt;</span>
-	<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.sure<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
-	<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>learn-mybatis-dynamic-datasource<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
-	<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
-	<span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>learn-mybatis-dynamic-datasource<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-	<span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>Demo project for Spring Boot<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
-
-	<span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span>
-		<span class="hljs-tag">&lt;<span class="hljs-name">java.version</span>&gt;</span>1.8<span class="hljs-tag">&lt;/<span class="hljs-name">java.version</span>&gt;</span>
-	<span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span>
-
-	<span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span>
-		
-		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
-			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
-			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
-		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
-
-		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
-			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.mybatis.spring.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
-			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis-spring-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
-			<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.1.4<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
-		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
-
-		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
-			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>mysql<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
-			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mysql-connector-java<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
-			<span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>runtime<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
-		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
-
-		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
-			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.projectlombok<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
-			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>lombok<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
-			<span class="hljs-tag">&lt;<span class="hljs-name">optional</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">optional</span>&gt;</span>
-		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
-
-		<span class="hljs-comment">&lt;!--AOP 依赖--&gt;</span>
-		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
-			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
-			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-aop<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
-		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
-
-		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
-			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
-			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
-			<span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>test<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
-		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
-
-	<span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span>
-
-	<span class="hljs-tag">&lt;<span class="hljs-name">build</span>&gt;</span>
-		<span class="hljs-tag">&lt;<span class="hljs-name">plugins</span>&gt;</span>
-			<span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span>
-				<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
-				<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
-			<span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span>
-		<span class="hljs-tag">&lt;/<span class="hljs-name">plugins</span>&gt;</span>
-	<span class="hljs-tag">&lt;/<span class="hljs-name">build</span>&gt;</span>
-
-<span class="hljs-tag">&lt;/<span class="hljs-name">project</span>&gt;</span></code></pre>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><h3 id="1-POM依赖"><a href="#1-POM依赖" class="headerlink" title="1. POM依赖"></a>1. POM依赖</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">project</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span><br><span class="hljs-tag">	<span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">modelVersion</span>&gt;</span>4.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">modelVersion</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">parent</span>&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.4.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">relativePath</span>/&gt;</span> <span class="hljs-comment">&lt;!-- lookup parent from repository --&gt;</span><br>	<span class="hljs-tag">&lt;/<span class="hljs-name">parent</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.sure<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>learn-mybatis-dynamic-datasource<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>learn-mybatis-dynamic-datasource<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>Demo project for Spring Boot<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span><br><br>	<span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">java.version</span>&gt;</span>1.8<span class="hljs-tag">&lt;/<span class="hljs-name">java.version</span>&gt;</span><br>	<span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span><br><br>	<span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span><br>		<br>		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.mybatis.spring.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis-spring-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.1.4<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>mysql<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mysql-connector-java<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>runtime<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span><br>		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.projectlombok<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>lombok<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">optional</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">optional</span>&gt;</span><br>		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>		<span class="hljs-comment">&lt;!--AOP 依赖--&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-aop<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>test<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span><br>		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>	<span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span><br><br>	<span class="hljs-tag">&lt;<span class="hljs-name">build</span>&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">plugins</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span><br>				<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>				<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>			<span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span><br>		<span class="hljs-tag">&lt;/<span class="hljs-name">plugins</span>&gt;</span><br>	<span class="hljs-tag">&lt;/<span class="hljs-name">build</span>&gt;</span><br><br><span class="hljs-tag">&lt;/<span class="hljs-name">project</span>&gt;</span><br></code></pre></td></tr></table></figure>
 
 <h3 id="2-配置文件"><a href="#2-配置文件" class="headerlink" title="2. 配置文件"></a>2. 配置文件</h3><p>不同的业务线配置不同的数据库</p>
-<pre><code class="hljs yaml"><span class="hljs-attr">spring:</span>
-  <span class="hljs-attr">datasource:</span>
-    <span class="hljs-attr">fund:</span>
-      <span class="hljs-attr">driverClassName:</span> <span class="hljs-string">com.mysql.cj.jdbc.Driver</span>
-      <span class="hljs-attr">username:</span> <span class="hljs-string">root</span>
-      <span class="hljs-attr">password:</span> <span class="hljs-string">root</span>
-      <span class="hljs-attr">jdbcUrl:</span> <span class="hljs-string">jdbc:mysql://localhost:3306/fund?useUnicode=true&amp;characterEncoding=utf8</span>
-    <span class="hljs-attr">stock:</span>
-      <span class="hljs-attr">driverClassName:</span> <span class="hljs-string">com.mysql.cj.jdbc.Driver</span>
-      <span class="hljs-attr">username:</span> <span class="hljs-string">root</span>
-      <span class="hljs-attr">password:</span> <span class="hljs-string">root</span>
-      <span class="hljs-attr">jdbcUrl:</span> <span class="hljs-string">jdbc:mysql://localhost:3306/stock?useUnicode=true&amp;characterEncoding=utf8</span>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">datasource:</span><br>    <span class="hljs-attr">fund:</span><br>      <span class="hljs-attr">driverClassName:</span> <span class="hljs-string">com.mysql.cj.jdbc.Driver</span><br>      <span class="hljs-attr">username:</span> <span class="hljs-string">root</span><br>      <span class="hljs-attr">password:</span> <span class="hljs-string">root</span><br>      <span class="hljs-attr">jdbcUrl:</span> <span class="hljs-string">jdbc:mysql://localhost:3306/fund?useUnicode=true&amp;characterEncoding=utf8</span><br>    <span class="hljs-attr">stock:</span><br>      <span class="hljs-attr">driverClassName:</span> <span class="hljs-string">com.mysql.cj.jdbc.Driver</span><br>      <span class="hljs-attr">username:</span> <span class="hljs-string">root</span><br>      <span class="hljs-attr">password:</span> <span class="hljs-string">root</span><br>      <span class="hljs-attr">jdbcUrl:</span> <span class="hljs-string">jdbc:mysql://localhost:3306/stock?useUnicode=true&amp;characterEncoding=utf8</span><br><br><span class="hljs-attr">logging:</span><br>  <span class="hljs-attr">level:</span><br>    <span class="hljs-attr">com.sure:</span> <span class="hljs-string">debug</span><br></code></pre></td></tr></table></figure>
 
-<span class="hljs-attr">logging:</span>
-  <span class="hljs-attr">level:</span>
-    <span class="hljs-attr">com.sure:</span> <span class="hljs-string">debug</span></code></pre>
+<h3 id="3-创建业务平台枚举类型"><a href="#3-创建业务平台枚举类型" class="headerlink" title="3. 创建业务平台枚举类型"></a>3. 创建业务平台枚举类型</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 业务平台枚举</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author</span> sure</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">PlatformEnum</span> &#123;<br><br>    FUND(<span class="hljs-string">&quot;fund&quot;</span>),<br>    STOCK(<span class="hljs-string">&quot;stock&quot;</span>);<br><br>    <span class="hljs-keyword">public</span> String value;<br><br>    PlatformEnum(String value)&#123;<br>        <span class="hljs-built_in">this</span>.value = value;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h3 id="3-创建业务平台枚举类型"><a href="#3-创建业务平台枚举类型" class="headerlink" title="3. 创建业务平台枚举类型"></a>3. 创建业务平台枚举类型</h3><pre><code class="hljs java"><span class="hljs-comment">/**</span>
-<span class="hljs-comment"> * 业务平台枚举</span>
-<span class="hljs-comment"> *</span>
-<span class="hljs-comment"> * <span class="hljs-doctag">@author</span> sure</span>
-<span class="hljs-comment"> */</span>
-<span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">PlatformEnum</span> &#123;
+<h3 id="4-动态数据源上下文管理"><a href="#4-动态数据源上下文管理" class="headerlink" title="4. 动态数据源上下文管理"></a>4. 动态数据源上下文管理</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 动态数据源上下文管理</span><br><span class="hljs-comment"> * </span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author</span> sure </span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DataSourceContextHolder</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> ThreadLocal&lt;String&gt; contextHolder = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ThreadLocal</span>&lt;&gt;();<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 设置数据源</span><br><span class="hljs-comment">     * </span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> dataSourceKey</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setDataSource</span><span class="hljs-params">(String dataSourceKey)</span>&#123;<br>        contextHolder.set(dataSourceKey);<br>    &#125;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获取数据源</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String <span class="hljs-title function_">getDataSource</span><span class="hljs-params">()</span>&#123;<br>        <span class="hljs-keyword">return</span> contextHolder.get();<br>    &#125;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 清空数据源设置</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">clearDataSource</span><span class="hljs-params">()</span>&#123;<br>        contextHolder.remove();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-    FUND(<span class="hljs-string">&quot;fund&quot;</span>),
-    STOCK(<span class="hljs-string">&quot;stock&quot;</span>);
+<h3 id="5-动态数据源"><a href="#5-动态数据源" class="headerlink" title="5.动态数据源"></a>5.动态数据源</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 动态数据源</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DynamicDataSource</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">AbstractRoutingDataSource</span> &#123;<br>    <br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">protected</span> Object <span class="hljs-title function_">determineCurrentLookupKey</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> DataSourceContextHolder.getDataSource();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-    <span class="hljs-keyword">public</span> String value;
+<h3 id="6-Mybatis多数据源配置"><a href="#6-Mybatis多数据源配置" class="headerlink" title="6. Mybatis多数据源配置"></a>6. Mybatis多数据源配置</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Mybatais 动态数据源配置</span><br><span class="hljs-comment"> * </span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author</span> sure </span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-meta">@MapperScan(basePackages = &quot;com.sure.learnmybatisdynamicdatasource.mapper&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MybaticDynamicDataSourceConfig</span> &#123;<br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-meta">@ConfigurationProperties(&quot;spring.datasource.fund&quot;)</span><br>    <span class="hljs-keyword">public</span> DataSource <span class="hljs-title function_">fundDataSource</span><span class="hljs-params">()</span>&#123;<br>        <span class="hljs-keyword">return</span> DataSourceBuilder.create().build();<br>    &#125;<br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-meta">@ConfigurationProperties(&quot;spring.datasource.stock&quot;)</span><br>    <span class="hljs-keyword">public</span> DataSource <span class="hljs-title function_">stockDataSource</span><span class="hljs-params">()</span>&#123;<br>        <span class="hljs-keyword">return</span> DataSourceBuilder.create().build();<br>    &#125;<br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> DynamicDataSource <span class="hljs-title function_">dataSource</span><span class="hljs-params">(<span class="hljs-meta">@Qualifier(&quot;fundDataSource&quot;)</span> DataSource fundDataSource,</span><br><span class="hljs-params">                                        <span class="hljs-meta">@Qualifier(&quot;stockDataSource&quot;)</span> DataSource stockDataSource)</span>&#123;<br><br>        Map&lt;Object,Object&gt; dataSources = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();<br><br>        dataSources.put(PlatformEnum.FUND.value,fundDataSource);<br>        dataSources.put(PlatformEnum.STOCK.value,stockDataSource);<br><br>        <span class="hljs-type">DynamicDataSource</span> <span class="hljs-variable">dynamicDataSource</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DynamicDataSource</span>();<br><br>        dynamicDataSource.setTargetDataSources(dataSources);<br>        dynamicDataSource.setDefaultTargetDataSource(fundDataSource);<br><br>        <span class="hljs-keyword">return</span> dynamicDataSource;<br>    &#125;<br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> SqlSessionFactory <span class="hljs-title function_">sqlSessionFactory</span><span class="hljs-params">(DynamicDataSource dynamicDataSource)</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>        <span class="hljs-type">SqlSessionFactoryBean</span> <span class="hljs-variable">sqlSessionFactoryBean</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SqlSessionFactoryBean</span>();<br><br>        sqlSessionFactoryBean.setDataSource(dynamicDataSource);<br><br>        <span class="hljs-comment">// 扫描mapper路径</span><br>        Resource[] resources = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PathMatchingResourcePatternResolver</span>().getResources(<span class="hljs-string">&quot;classpath:mapper/*.xml&quot;</span>);<br>        sqlSessionFactoryBean.setMapperLocations(resources);<br>        <span class="hljs-keyword">return</span> sqlSessionFactoryBean.getObject();<br>    &#125;<br><br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> PlatformTransactionManager <span class="hljs-title function_">transactionManager</span><span class="hljs-params">(DynamicDataSource dynamicDataSource)</span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DataSourceTransactionManager</span>(dynamicDataSource);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-    PlatformEnum(String value)&#123;
-        <span class="hljs-built_in">this</span>.value = value;
-    &#125;
-&#125;</code></pre>
-
-<h3 id="4-动态数据源上下文管理"><a href="#4-动态数据源上下文管理" class="headerlink" title="4. 动态数据源上下文管理"></a>4. 动态数据源上下文管理</h3><pre><code class="hljs java"><span class="hljs-comment">/**</span>
-<span class="hljs-comment"> * 动态数据源上下文管理</span>
-<span class="hljs-comment"> * </span>
-<span class="hljs-comment"> * <span class="hljs-doctag">@author</span> sure </span>
-<span class="hljs-comment"> */</span>
-<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DataSourceContextHolder</span> &#123;
-
-    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> ThreadLocal&lt;String&gt; contextHolder = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ThreadLocal</span>&lt;&gt;();
-
-    <span class="hljs-comment">/**</span>
-<span class="hljs-comment">     * 设置数据源</span>
-<span class="hljs-comment">     * </span>
-<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> dataSourceKey</span>
-<span class="hljs-comment">     */</span>
-    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setDataSource</span><span class="hljs-params">(String dataSourceKey)</span>&#123;
-        contextHolder.set(dataSourceKey);
-    &#125;
-    <span class="hljs-comment">/**</span>
-<span class="hljs-comment">     * 获取数据源</span>
-<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
-<span class="hljs-comment">     */</span>
-    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String <span class="hljs-title function_">getDataSource</span><span class="hljs-params">()</span>&#123;
-        <span class="hljs-keyword">return</span> contextHolder.get();
-    &#125;
-    <span class="hljs-comment">/**</span>
-<span class="hljs-comment">     * 清空数据源设置</span>
-<span class="hljs-comment">     */</span>
-    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">clearDataSource</span><span class="hljs-params">()</span>&#123;
-        contextHolder.remove();
-    &#125;
-&#125;</code></pre>
-
-<h3 id="5-动态数据源"><a href="#5-动态数据源" class="headerlink" title="5.动态数据源"></a>5.动态数据源</h3><pre><code class="hljs java"><span class="hljs-comment">/**</span>
-<span class="hljs-comment"> * 动态数据源</span>
-<span class="hljs-comment"> */</span>
-<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DynamicDataSource</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">AbstractRoutingDataSource</span> &#123;
-    
-    <span class="hljs-meta">@Override</span>
-    <span class="hljs-keyword">protected</span> Object <span class="hljs-title function_">determineCurrentLookupKey</span><span class="hljs-params">()</span> &#123;
-        <span class="hljs-keyword">return</span> DataSourceContextHolder.getDataSource();
-    &#125;
-&#125;</code></pre>
-
-<h3 id="6-Mybatis多数据源配置"><a href="#6-Mybatis多数据源配置" class="headerlink" title="6. Mybatis多数据源配置"></a>6. Mybatis多数据源配置</h3><pre><code class="hljs java"><span class="hljs-comment">/**</span>
-<span class="hljs-comment"> * Mybatais 动态数据源配置</span>
-<span class="hljs-comment"> * </span>
-<span class="hljs-comment"> * <span class="hljs-doctag">@author</span> sure </span>
-<span class="hljs-comment"> */</span>
-<span class="hljs-meta">@Configuration</span>
-<span class="hljs-meta">@MapperScan(basePackages = &quot;com.sure.learnmybatisdynamicdatasource.mapper&quot;)</span>
-<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MybaticDynamicDataSourceConfig</span> &#123;
-
-    <span class="hljs-meta">@Bean</span>
-    <span class="hljs-meta">@ConfigurationProperties(&quot;spring.datasource.fund&quot;)</span>
-    <span class="hljs-keyword">public</span> DataSource <span class="hljs-title function_">fundDataSource</span><span class="hljs-params">()</span>&#123;
-        <span class="hljs-keyword">return</span> DataSourceBuilder.create().build();
-    &#125;
-
-    <span class="hljs-meta">@Bean</span>
-    <span class="hljs-meta">@ConfigurationProperties(&quot;spring.datasource.stock&quot;)</span>
-    <span class="hljs-keyword">public</span> DataSource <span class="hljs-title function_">stockDataSource</span><span class="hljs-params">()</span>&#123;
-        <span class="hljs-keyword">return</span> DataSourceBuilder.create().build();
-    &#125;
-
-    <span class="hljs-meta">@Bean</span>
-    <span class="hljs-keyword">public</span> DynamicDataSource <span class="hljs-title function_">dataSource</span><span class="hljs-params">(<span class="hljs-meta">@Qualifier(&quot;fundDataSource&quot;)</span> DataSource fundDataSource,</span>
-<span class="hljs-params">                                        <span class="hljs-meta">@Qualifier(&quot;stockDataSource&quot;)</span> DataSource stockDataSource)</span>&#123;
-
-        Map&lt;Object,Object&gt; dataSources = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
-
-        dataSources.put(PlatformEnum.FUND.value,fundDataSource);
-        dataSources.put(PlatformEnum.STOCK.value,stockDataSource);
-
-        <span class="hljs-type">DynamicDataSource</span> <span class="hljs-variable">dynamicDataSource</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DynamicDataSource</span>();
-
-        dynamicDataSource.setTargetDataSources(dataSources);
-        dynamicDataSource.setDefaultTargetDataSource(fundDataSource);
-
-        <span class="hljs-keyword">return</span> dynamicDataSource;
-    &#125;
-
-    <span class="hljs-meta">@Bean</span>
-    <span class="hljs-keyword">public</span> SqlSessionFactory <span class="hljs-title function_">sqlSessionFactory</span><span class="hljs-params">(DynamicDataSource dynamicDataSource)</span> <span class="hljs-keyword">throws</span> Exception &#123;
-        <span class="hljs-type">SqlSessionFactoryBean</span> <span class="hljs-variable">sqlSessionFactoryBean</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SqlSessionFactoryBean</span>();
-
-        sqlSessionFactoryBean.setDataSource(dynamicDataSource);
-
-        <span class="hljs-comment">// 扫描mapper路径</span>
-        Resource[] resources = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PathMatchingResourcePatternResolver</span>().getResources(<span class="hljs-string">&quot;classpath:mapper/*.xml&quot;</span>);
-        sqlSessionFactoryBean.setMapperLocations(resources);
-        <span class="hljs-keyword">return</span> sqlSessionFactoryBean.getObject();
-    &#125;
-
-
-    <span class="hljs-meta">@Bean</span>
-    <span class="hljs-keyword">public</span> PlatformTransactionManager <span class="hljs-title function_">transactionManager</span><span class="hljs-params">(DynamicDataSource dynamicDataSource)</span>&#123;
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DataSourceTransactionManager</span>(dynamicDataSource);
-    &#125;
-&#125;</code></pre>
-
-<h3 id="7-动态数据源切面"><a href="#7-动态数据源切面" class="headerlink" title="7. 动态数据源切面"></a>7. 动态数据源切面</h3><pre><code class="hljs java"><span class="hljs-comment">/**</span>
-<span class="hljs-comment"> * 动态数据源切面</span>
-<span class="hljs-comment"> * </span>
-<span class="hljs-comment"> * <span class="hljs-doctag">@author</span> sure </span>
-<span class="hljs-comment"> */</span>
-<span class="hljs-meta">@Aspect</span>
-<span class="hljs-meta">@Component</span>
-<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DataSourceAspect</span> &#123;
-
-    <span class="hljs-meta">@Pointcut(&quot;execution(public * com.sure.learnmybatisdynamicdatasource.mapper..*.*(..))&quot;)</span>
-    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">aop</span><span class="hljs-params">()</span>&#123;&#125;
-
-
-    <span class="hljs-meta">@Around(&quot;aop()&quot;)</span>
-    <span class="hljs-keyword">public</span> Object <span class="hljs-title function_">around</span><span class="hljs-params">(ProceedingJoinPoint joinPoint)</span> <span class="hljs-keyword">throws</span> Throwable &#123;
-        Object[] args = joinPoint.getArgs();
-        <span class="hljs-keyword">if</span> (Objects.nonNull(args) &amp;&amp; args.length&gt;<span class="hljs-number">0</span>)&#123;
-            DataSourceContextHolder.setDataSource(args[<span class="hljs-number">0</span>].toString());
-        &#125;
-        <span class="hljs-keyword">try</span> &#123;
-            <span class="hljs-keyword">return</span> joinPoint.proceed();
-        &#125;<span class="hljs-keyword">finally</span> &#123;
-            DataSourceContextHolder.clearDataSource();
-        &#125;
-    &#125;
-&#125;</code></pre>
+<h3 id="7-动态数据源切面"><a href="#7-动态数据源切面" class="headerlink" title="7. 动态数据源切面"></a>7. 动态数据源切面</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 动态数据源切面</span><br><span class="hljs-comment"> * </span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author</span> sure </span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Aspect</span><br><span class="hljs-meta">@Component</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DataSourceAspect</span> &#123;<br><br>    <span class="hljs-meta">@Pointcut(&quot;execution(public * com.sure.learnmybatisdynamicdatasource.mapper..*.*(..))&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">aop</span><span class="hljs-params">()</span>&#123;&#125;<br><br><br>    <span class="hljs-meta">@Around(&quot;aop()&quot;)</span><br>    <span class="hljs-keyword">public</span> Object <span class="hljs-title function_">around</span><span class="hljs-params">(ProceedingJoinPoint joinPoint)</span> <span class="hljs-keyword">throws</span> Throwable &#123;<br>        Object[] args = joinPoint.getArgs();<br>        <span class="hljs-keyword">if</span> (Objects.nonNull(args) &amp;&amp; args.length&gt;<span class="hljs-number">0</span>)&#123;<br>            DataSourceContextHolder.setDataSource(args[<span class="hljs-number">0</span>].toString());<br>        &#125;<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-keyword">return</span> joinPoint.proceed();<br>        &#125;<span class="hljs-keyword">finally</span> &#123;<br>            DataSourceContextHolder.clearDataSource();<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h3 id="8-编写Mapper"><a href="#8-编写Mapper" class="headerlink" title="8. 编写Mapper"></a>8. 编写Mapper</h3><p>注意mapper中的第一个参数预留来指定数据源</p>
-<pre><code class="hljs java"><span class="hljs-meta">@Mapper</span>
-<span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">RbacUserMapper</span> &#123;
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Mapper</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">RbacUserMapper</span> &#123;<br><br>    Integer <span class="hljs-title function_">save</span><span class="hljs-params">(String dataSource, <span class="hljs-meta">@Param(&quot;user&quot;)</span> RbacUserDO rbacUserDO)</span>;<br><br>    RbacUserDO <span class="hljs-title function_">get</span><span class="hljs-params">(String dataSource, <span class="hljs-meta">@Param(&quot;id&quot;)</span> Integer id)</span>;<br><br>&#125;<br></code></pre></td></tr></table></figure>
 
-    Integer <span class="hljs-title function_">save</span><span class="hljs-params">(String dataSource, <span class="hljs-meta">@Param(&quot;user&quot;)</span> RbacUserDO rbacUserDO)</span>;
-
-    RbacUserDO <span class="hljs-title function_">get</span><span class="hljs-params">(String dataSource, <span class="hljs-meta">@Param(&quot;id&quot;)</span> Integer id)</span>;
-
-&#125;</code></pre>
-
-<pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">mapper</span> <span class="hljs-attr">namespace</span>=<span class="hljs-string">&quot;com.sure.learnmybatisdynamicdatasource.mapper.RbacUserMapper&quot;</span>&gt;</span>
-
-    <span class="hljs-tag">&lt;<span class="hljs-name">insert</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;save&quot;</span> <span class="hljs-attr">keyProperty</span>=<span class="hljs-string">&quot;id&quot;</span>&gt;</span>
-        insert into rbac_user(name) values (#&#123;user.name&#125;)
-    <span class="hljs-tag">&lt;/<span class="hljs-name">insert</span>&gt;</span>
-
-    <span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;get&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;com.sure.learnmybatisdynamicdatasource.domain.RbacUserDO&quot;</span>&gt;</span>
-        select id,name from rbac_user where id = #&#123;id&#125;
-    <span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span>
-
-<span class="hljs-tag">&lt;/<span class="hljs-name">mapper</span>&gt;</span></code></pre>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">mapper</span> <span class="hljs-attr">namespace</span>=<span class="hljs-string">&quot;com.sure.learnmybatisdynamicdatasource.mapper.RbacUserMapper&quot;</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">insert</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;save&quot;</span> <span class="hljs-attr">keyProperty</span>=<span class="hljs-string">&quot;id&quot;</span>&gt;</span><br>        insert into rbac_user(name) values (#&#123;user.name&#125;)<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">insert</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;get&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;com.sure.learnmybatisdynamicdatasource.domain.RbacUserDO&quot;</span>&gt;</span><br>        select id,name from rbac_user where id = #&#123;id&#125;<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br><br><span class="hljs-tag">&lt;/<span class="hljs-name">mapper</span>&gt;</span><br></code></pre></td></tr></table></figure>
 
 <h3 id="9-编写service"><a href="#9-编写service" class="headerlink" title="9.编写service"></a>9.编写service</h3><p>同样注意方法参数中的数据源参数</p>
-<pre><code class="hljs java"><span class="hljs-meta">@Service</span>
-<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RbacUserService</span> &#123;
-
-    <span class="hljs-meta">@Autowired</span>
-    <span class="hljs-keyword">private</span> RbacUserMapper rbacUserMapper;
-
-
-    <span class="hljs-keyword">public</span> Integer <span class="hljs-title function_">save</span><span class="hljs-params">(String dataSource, RbacUserDO rbacUserDO)</span>&#123;
-        <span class="hljs-keyword">return</span> rbacUserMapper.save(dataSource, rbacUserDO);
-    &#125;
-
-    <span class="hljs-keyword">public</span> RbacUserDO <span class="hljs-title function_">get</span><span class="hljs-params">(String dataSource, Integer id)</span>&#123;
-        <span class="hljs-type">RbacUserDO</span> <span class="hljs-variable">rbacUserDO</span> <span class="hljs-operator">=</span> rbacUserMapper.get(dataSource, id);
-        <span class="hljs-keyword">return</span> rbacUserDO;
-    &#125;
-
-&#125;</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RbacUserService</span> &#123;<br><br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> RbacUserMapper rbacUserMapper;<br><br><br>    <span class="hljs-keyword">public</span> Integer <span class="hljs-title function_">save</span><span class="hljs-params">(String dataSource, RbacUserDO rbacUserDO)</span>&#123;<br>        <span class="hljs-keyword">return</span> rbacUserMapper.save(dataSource, rbacUserDO);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> RbacUserDO <span class="hljs-title function_">get</span><span class="hljs-params">(String dataSource, Integer id)</span>&#123;<br>        <span class="hljs-type">RbacUserDO</span> <span class="hljs-variable">rbacUserDO</span> <span class="hljs-operator">=</span> rbacUserMapper.get(dataSource, id);<br>        <span class="hljs-keyword">return</span> rbacUserDO;<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h3 id="10-编写Controller层"><a href="#10-编写Controller层" class="headerlink" title="10. 编写Controller层"></a>10. 编写Controller层</h3><p>通用返回参数</p>
-<pre><code class="hljs java"><span class="hljs-meta">@Data</span>
-<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Result</span>&lt;T&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span> &#123;
-
-    <span class="hljs-keyword">private</span> Integer code;
-
-    <span class="hljs-keyword">private</span> String msg;
-
-    <span class="hljs-keyword">private</span> T data;
-
-    <span class="hljs-keyword">private</span> <span class="hljs-title function_">Result</span><span class="hljs-params">(Integer code , String msg)</span>&#123;
-        <span class="hljs-built_in">this</span>.code = code;
-        <span class="hljs-built_in">this</span>.msg = msg;
-    &#125;
-
-    <span class="hljs-keyword">private</span> <span class="hljs-title function_">Result</span><span class="hljs-params">(Integer code , String msg, T data)</span>&#123;
-        <span class="hljs-built_in">this</span>.code = code;
-        <span class="hljs-built_in">this</span>.msg = msg;
-        <span class="hljs-built_in">this</span>.data = data;
-    &#125;
-
-    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span>  Result <span class="hljs-title function_">ok</span><span class="hljs-params">()</span>&#123;
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Result</span>(ResultEnum.SUCCESS.code,ResultEnum.SUCCESS.msg);
-    &#125;
-
-    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;T&gt; Result <span class="hljs-title function_">ok</span><span class="hljs-params">(T data)</span>&#123;
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Result</span>(ResultEnum.SUCCESS.code,ResultEnum.SUCCESS.msg,data);
-    &#125;
-
-    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span>  Result <span class="hljs-title function_">error</span><span class="hljs-params">()</span>&#123;
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Result</span>(ResultEnum.ERROR.code,ResultEnum.ERROR.msg);
-    &#125;
-
-    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span>  Result <span class="hljs-title function_">error</span><span class="hljs-params">(Integer code,String msg)</span>&#123;
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Result</span>(code,msg);
-    &#125;
-
-&#125;</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Data</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Result</span>&lt;T&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span> &#123;<br><br>    <span class="hljs-keyword">private</span> Integer code;<br><br>    <span class="hljs-keyword">private</span> String msg;<br><br>    <span class="hljs-keyword">private</span> T data;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-title function_">Result</span><span class="hljs-params">(Integer code , String msg)</span>&#123;<br>        <span class="hljs-built_in">this</span>.code = code;<br>        <span class="hljs-built_in">this</span>.msg = msg;<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-title function_">Result</span><span class="hljs-params">(Integer code , String msg, T data)</span>&#123;<br>        <span class="hljs-built_in">this</span>.code = code;<br>        <span class="hljs-built_in">this</span>.msg = msg;<br>        <span class="hljs-built_in">this</span>.data = data;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span>  Result <span class="hljs-title function_">ok</span><span class="hljs-params">()</span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Result</span>(ResultEnum.SUCCESS.code,ResultEnum.SUCCESS.msg);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;T&gt; Result <span class="hljs-title function_">ok</span><span class="hljs-params">(T data)</span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Result</span>(ResultEnum.SUCCESS.code,ResultEnum.SUCCESS.msg,data);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span>  Result <span class="hljs-title function_">error</span><span class="hljs-params">()</span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Result</span>(ResultEnum.ERROR.code,ResultEnum.ERROR.msg);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span>  Result <span class="hljs-title function_">error</span><span class="hljs-params">(Integer code,String msg)</span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Result</span>(code,msg);<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>状态码枚举</p>
-<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">ResultEnum</span> &#123;
-    SUCCESS(<span class="hljs-number">1</span>,<span class="hljs-string">&quot;success&quot;</span>),
-    ERROR(-<span class="hljs-number">1</span>,<span class="hljs-string">&quot;system error&quot;</span>);
-
-    <span class="hljs-keyword">public</span> Integer code;
-
-    <span class="hljs-keyword">public</span> String msg;
-
-    ResultEnum (Integer code,String msg)&#123;
-        <span class="hljs-built_in">this</span>.code = code;
-        <span class="hljs-built_in">this</span>.msg = msg;
-    &#125;
-&#125;</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">ResultEnum</span> &#123;<br>    SUCCESS(<span class="hljs-number">1</span>,<span class="hljs-string">&quot;success&quot;</span>),<br>    ERROR(-<span class="hljs-number">1</span>,<span class="hljs-string">&quot;system error&quot;</span>);<br><br>    <span class="hljs-keyword">public</span> Integer code;<br><br>    <span class="hljs-keyword">public</span> String msg;<br><br>    ResultEnum (Integer code,String msg)&#123;<br>        <span class="hljs-built_in">this</span>.code = code;<br>        <span class="hljs-built_in">this</span>.msg = msg;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>使用path参数来指定业务平台</p>
-<pre><code class="hljs java"><span class="hljs-meta">@RestController</span>
-<span class="hljs-meta">@RequestMapping(&quot;api/1&quot;)</span>
-<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RbacUserController</span> &#123;
-
-    <span class="hljs-meta">@Autowired</span>
-    <span class="hljs-keyword">public</span> RbacUserService rbacUserService;
-
-    <span class="hljs-meta">@PostMapping(&quot;&#123;platform&#125;/user&quot;)</span>
-    <span class="hljs-keyword">public</span> Result <span class="hljs-title function_">addUser</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> String platform, RbacUserDO rbacUserDO)</span>&#123;
-
-        <span class="hljs-keyword">return</span> Result.ok(rbacUserService.save(platform, rbacUserDO));
-    &#125;
-
-
-    <span class="hljs-meta">@GetMapping(&quot;&#123;platform&#125;/user/&#123;id&#125;&quot;)</span>
-    <span class="hljs-keyword">public</span> Result <span class="hljs-title function_">getUser</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable(&quot;platform&quot;)</span> String platform,<span class="hljs-meta">@PathVariable(&quot;id&quot;)</span> Integer id)</span>&#123;
-        <span class="hljs-type">RbacUserDO</span> <span class="hljs-variable">rbacUserDO</span> <span class="hljs-operator">=</span> rbacUserService.get(platform, id);
-        <span class="hljs-keyword">return</span> Result.ok(rbacUserDO);
-    &#125;
-
-&#125;</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;api/1&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RbacUserController</span> &#123;<br><br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">public</span> RbacUserService rbacUserService;<br><br>    <span class="hljs-meta">@PostMapping(&quot;&#123;platform&#125;/user&quot;)</span><br>    <span class="hljs-keyword">public</span> Result <span class="hljs-title function_">addUser</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> String platform, RbacUserDO rbacUserDO)</span>&#123;<br><br>        <span class="hljs-keyword">return</span> Result.ok(rbacUserService.save(platform, rbacUserDO));<br>    &#125;<br><br><br>    <span class="hljs-meta">@GetMapping(&quot;&#123;platform&#125;/user/&#123;id&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> Result <span class="hljs-title function_">getUser</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable(&quot;platform&quot;)</span> String platform,<span class="hljs-meta">@PathVariable(&quot;id&quot;)</span> Integer id)</span>&#123;<br>        <span class="hljs-type">RbacUserDO</span> <span class="hljs-variable">rbacUserDO</span> <span class="hljs-operator">=</span> rbacUserService.get(platform, id);<br>        <span class="hljs-keyword">return</span> Result.ok(rbacUserDO);<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h1 id="踩到的坑"><a href="#踩到的坑" class="headerlink" title="踩到的坑"></a>踩到的坑</h1><p>注意切面类返回值！！！</p>
-<p><img src="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/mongodb_1/20201202222202.png" srcset="/img/loading.gif" alt="为啥返回null"></p>
+<p><img src="https://yeziup-blog.oss-cn-shanghai.aliyuncs.com/img/mongodb_1/20201202222202.png" srcset="/img/loading.gif" lazyload alt="为啥返回null"></p>
 
-            </div>
-            <hr>
-            <div>
-              <div class="post-metas mb-3">
-                
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/Mybatis/">Mybatis</a>
-                    
-                  </div>
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/Mybatis/">Mybatis</a>
-                    
-                  </div>
                 
               </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Mybatis/" class="category-chain-item">Mybatis</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Mybatis/">#Mybatis</a>
+      
+    </div>
+  
+</div>
+
+
               
-                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Mybatis动态数据源</div>
+      <div>http://example.com/2020/12/02/Mybatis动态数据源/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>cnsure</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年12月2日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
               
-              
-                <div class="post-prevnext row">
+                <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/01/23/Redis%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2/">
+                      <a href="/2021/01/23/Redis%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2/" title="Redis的安装以及生产环境的部署">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">Redis的安装以及生产环境的部署</span>
                         <span class="visible-mobile">上一篇</span>
@@ -626,7 +417,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/10/08/MongoDB-%E8%B5%B7%E6%AD%A5%EF%BC%88%E4%B8%80%EF%BC%89/">
+                      <a href="/2020/10/08/MongoDB-%E8%B5%B7%E6%AD%A5%EF%BC%88%E4%B8%80%EF%BC%89/" title="MongoDB 起步（一）">
                         <span class="hidden-mobile">MongoDB 起步（一）</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -642,32 +433,62 @@
         </div>
       </div>
     </div>
-    
-      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
-        <div id="toc">
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
   <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
-  <div id="tocbot"></div>
+  <div class="toc-body" id="toc-body"></div>
 </div>
 
-      </div>
-    
+
+
+  </aside>
+
+
+    </div>
   </div>
 </div>
 
-<!-- Custom -->
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
 
 
     
-  </main>
 
-  
-    <a id="scroll-top-button" href="#" role="button">
-      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-    </a>
-  
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
 
-  
-    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
      aria-hidden="true">
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
@@ -680,179 +501,159 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v"
-                 for="local-search-input">关键词</label>
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
     </div>
   </div>
 </div>
-  
 
-  
+    
 
-  
+    
+  </main>
 
-  <footer class="mt-5">
-  <div class="text-center py-3">
-    <div>
-      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
-      <i class="iconfont icon-love"></i>
-      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
-        <span>Fluid</span></a>
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
     </div>
-    
-
-    
-  <!-- 备案信息 -->
-  <div class="beian">
-    <a href="http://beian.miit.gov.cn/" target="_blank"
-       rel="nofollow noopener">鲁ICP备18049621号-2</a>
-    
-  </div>
-
-
-    
-  </div>
-</footer>
-
-<!-- SCRIPTS -->
-<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
-<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
-<script  src="/js/debouncer.js" ></script>
-<script  src="/js/main.js" ></script>
-
-<!-- Plugins -->
-
-
   
-    <script  src="/js/lazyload.js" ></script>
   
-
-
-
   
+  
+</div>
 
+  </footer>
 
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
 
-  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
-  <script  src="/js/clipboard-use.js" ></script>
-
-
-
-
-
-
-
-  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
   <script>
-    $(document).ready(function () {
-      var boardCtn = $('#board-ctn');
-      var boardTop = boardCtn.offset().top;
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
 
-      tocbot.init({
-        tocSelector: '#tocbot',
-        contentSelector: '#post-body',
-        headingSelector: 'h1,h2,h3,h4,h5,h6',
-        linkClass: 'tocbot-link',
-        activeLinkClass: 'tocbot-active-link',
-        listClass: 'tocbot-list',
-        isCollapsedClass: 'tocbot-is-collapsed',
-        collapsibleClass: 'tocbot-is-collapsible',
-        collapseDepth: 0,
-        scrollSmooth: true,
-        headingsOffset: -boardTop
-      });
-      if ($('.toc-list-item').length > 0) {
-        $('#toc').css('visibility', 'visible');
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
-    });
-  </script>
-
-
-
-  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
-  <script>
-    var typed = new Typed('#subtitle', {
-      strings: [
-        '  ',
-        "Mybatis动态数据源&nbsp;",
-      ],
-      cursorChar: "_",
-      typeSpeed: 70,
-      loop: false,
-    });
-    typed.stop();
-    $(document).ready(function () {
-      $(".typed-cursor").addClass("h2");
-      typed.start();
-    });
-  </script>
-
-
-
-  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
-  <script>
-    anchors.options = {
-      placement: "right",
-      visible: "hover",
+      var text = subtitle.getAttribute('data-typed-text');
       
-    };
-    var el = "h1,h2,h3,h4,h5,h6".split(",");
-    var res = [];
-    for (item of el) {
-      res.push(".markdown-body > " + item)
-    }
-    anchors.add(res.join(", "))
+        typing(text);
+      
+    })(window, document);
   </script>
 
 
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
 
   <script  src="/js/local-search.js" ></script>
-  <script>
-    var path = "/local-search.xml";
-    var inputArea = document.querySelector("#local-search-input");
-    inputArea.onclick = function () {
-      searchFunc(path, 'local-search-input', 'local-search-result');
-      this.onclick = null
-    }
-  </script>
-
-
-
-  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-  <script>
-    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
-      function () {
-        var element = document.createElement('a');
-        $(element).attr('data-fancybox', 'images');
-        $(element).attr('href', $(this).attr('src'));
-        $(this).wrap(element);
-      }
-    );
-  </script>
 
 
 
 
 
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
 
 
+  
 
-
-
-
-
-
-
-
-
-
-
-
-
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
 </body>
 </html>
